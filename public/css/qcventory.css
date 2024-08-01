@@ -1,0 +1,39 @@
+input[type=number],
+input[type=text] {
+  border: 1px solid #b7c4a9;
+  box-shadow: 0px 0px 3px gray;
+}
+
+.bg-qcventory {
+  background-color: #b1d4fc;
+  color: #343a40;
+  font-family: Impact, Haettenschweiler, "Arial Narrow Bold", sans-serif;
+}
+
+.page-header {
+  background-color: #64acff;
+  color: #f2fdf2;
+  font-family: Arial, Helvetica, sans-serif;
+  font-size: 20 pt;
+  padding: 10px 20px;
+}
+
+.qcv-notif {
+  display: none;
+}
+
+img.icon {
+  width: 15px;
+  height: 15px;
+}
+
+input, select, th, td {
+  font-size: 14px;
+  color: maroon;
+}
+
+@media screen and (max-width: 1365px) {
+  html, body {
+    font-size: 10pt !important;
+  }
+}/*# sourceMappingURL=qcventory.css.map */
