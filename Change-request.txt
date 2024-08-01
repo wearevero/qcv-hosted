@@ -1,0 +1,9 @@
+1. Pemisahan Menu Inventory - Jujo
+- Inventory : create package, send package, edit package, receive box.
+- Jujo : terima paket, proses, paket, kirim box,edit box.
+2. Penambahan total weight pada form package
+3. Formula loss 
+- Real Loss:  initial-weight - ( box_weight + granule weight)
+- Total Loss : (initial-weight + granule-weight) - box_weight
+4. Berat paket di inventory === berat paket di Jujo
+5. Berat 
