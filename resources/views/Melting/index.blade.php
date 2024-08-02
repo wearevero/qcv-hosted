@@ -10,6 +10,8 @@
                 <div class="sub-title">
                     <h4>Package Details</h4>
                 </div>
+                
+                {{-- Form Barcode: Begin --}}
                 <form action="#" id="melt-barcode">
                     <div class="form-group row my-3">
                         <label for="barcode" class="col-sm-4 col-form-label">Generate Barcode ke-<span id="sequence"></span></label>
@@ -38,32 +40,43 @@
                         </div>
                     </div>
                     <div class="form-group row my-3">
-                        <label for="xxx" class='col-sm-4'>Alloy</label>
-                        <div class="col-sm-2"><input type="text" class="form-control" name ="alloy-karat" id="alloy-karat" placeholder="karat" disabled></div>
-                        <div class="col-sm-2"><input type="text" class="form-control" name ="alloy-color" id="alloy-color" placeholder="color" disabled></div>
-                        <div class="col-sm-2"><input type="number" min="0" step="0.01" class="form-control" name ="alloy-weight" id="alloy-weight" placeholder="weight"></div>
-                        <div class="col-sm-2"><input type="text" class="form-control" name ="alloy-remark" id="alloy-remark" placeholder="remark"></div>
-                    </div>
-                    <div class="form-group row my-3">
                         <label for="xxx" class='col-sm-4'>Original</label>
                         <div class="col-sm-2"><input type="text" class="form-control" name ="original-karat" id="original-karat" placeholder="karat"></div>
                         <div class="col-sm-2"><input type="text" class="form-control" name ="original-color" id="original-color" placeholder="color"></div>
-                        <div class="col-sm-2"><input type="number" min="0" step="0.01" class="form-control" name ="original-weight" id="original-weight" placeholder="weight"></div>
+                        <div class="col-sm-2"><input type="number" min="0" step="0.01" class="form-control text-end weights" name ="original-weight" id="original-weight" placeholder="weight" @required(true)></div>
                         <div class="col-sm-2"><input type="text" class="form-control" name ="original-remark" id="original-remark" placeholder="remark"></div>
                     </div>
+
+                    <div class="form-group row my-3">
+                        <label for="xxx" class='col-sm-4'>Alloy</label>
+                        <div class="col-sm-2"><input type="text" class="form-control" name ="alloy-karat" id="alloy-karat" placeholder="karat"></div>
+                        <div class="col-sm-2"><input type="text" class="form-control" name ="alloy-color" id="alloy-color" placeholder="color"></div>
+                        <div class="col-sm-2"><input type="number" min="0" step="0.01" class="form-control text-end weights" name ="alloy-weight" id="alloy-weight" placeholder="weight" @required(true)></div>
+                        <div class="col-sm-2"><input type="text" class="form-control" name ="alloy-remark" id="alloy-remark" placeholder="remark"></div>
+                    </div>
+                    
                     <div class="form-group row my-3">
                         <label for="xxx" class='col-sm-4'>Pohon</label>
                         <div class="col-sm-2"><input type="text" class="form-control" name ="pohon-karat" id="pohon-karat" placeholder="karat"></div>
                         <div class="col-sm-2"><input type="text" class="form-control" name ="pohon-color" id="pohon-color" placeholder="color"></div>
-                        <div class="col-sm-2"><input type="number" min="0" step="0.01" class="form-control" name ="pohon-weight" id="pohon-weight" placeholder="weight"></div>
+                        <div class="col-sm-2"><input type="number" min="0" step="0.01" class="form-control text-end weights" name ="pohon-weight" id="pohon-weight" placeholder="weight" @required(true)></div>
                         <div class="col-sm-2"><input type="text" class="form-control" name ="pohon-remark" id="pohon-remark" placeholder="remark"></div>
                     </div>
                     <div class="form-group row my-3">
                         <label for="xxx" class='col-sm-4'>Potongan</label>
                         <div class="col-sm-2"><input type="text" class="form-control" name ="potongan-karat" id="potongan-karat" placeholder="karat"></div>
                         <div class="col-sm-2"><input type="text" class="form-control" name ="potongan-color" id="potongan-color" placeholder="color"></div>
-                        <div class="col-sm-2"><input type="number" min="0" step="0.01" class="form-control" name ="potongan-weight" id="potongan-weight" placeholder="weight"></div>
+                        <div class="col-sm-2"><input type="number" min="0" step="0.01" class="form-control text-end weights" name ="potongan-weight" id="potongan-weight" placeholder="weight" @required(true)></div>
                         <div class="col-sm-2"><input type="text" class="form-control" name ="potongan-remark" id="potongan-remark" placeholder="remark"></div>
+                    </div>
+                    <div class="form-group row py-0 my-0">
+                        <label for="xxx" class="col-sm-4">Total Weight</label>
+                        <div class="col-sm-2">&nbsp;</div>
+                        <div class="col-sm-2">&nbsp;</div>
+                        <div class="col-sm-2">
+                            <input type="number" id="total-weight" class="form-control text-end" @readonly(true) @disabled(true) value="0.00">
+                        </div>
+                        <div class="col-sm-2">&nbsp;</div>
                     </div>
                     <div class="form-group row py-3 my-3"style="border-top:1px solid black;">
                         <label for="by_user" class="col-sm-4">Dibuat Oleh</label>
@@ -74,8 +87,8 @@
                             <button type="submit" class="btn btn-primary rounded form-control">Create</button>
                         </div>
                     </div>
-                    
                 </form>
+                {{-- Form Barcode:ended --}}
             </section>
         </div>
         {{-- Tabel Barcode --}}

@@ -7,9 +7,15 @@ input[type=text]{
 .bg-qcventory{
     background-color: #b1d4fc;
     color: #343a40;
-    font-family: Impact, Haettenschweiler, 'Arial Narrow Bold', sans-serif;
+    font-family:Verdana, Geneva, Tahoma, sans-serif;
 }
-
+#navbarSupportedContent > ul > li> ul > li{
+    margin-top:0;
+    margin-bottom: 0;
+    font-size: 12pt!important;
+    padding-top: 0;
+    padding-bottom: 0;
+}
 .page-header{
     background-color: #64acff;
     color: #f2fdf2;

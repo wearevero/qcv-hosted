@@ -31,6 +31,7 @@ $("#bc-karat").on("change", function () {
     let sqe = $("#sequence").text();
     barcode = `MEL-${strtime}-${kar}${col}.${sqe}`;
     $("#barcode").val(barcode);
+    $("#original-karat").val(kar);
     $("#pohon-karat").val(kar);
     $("#potongan-karat").val(kar);
     
@@ -42,6 +43,8 @@ $("#bc-color").on("change", function () {
     let sqe = $("#sequence").text();
     barcode = `MEL-${strtime}-${kar}${col}.${sqe}`;
     $("#barcode").val(barcode);
+    $("#alloy-color").val(col);
+    $("#original-color").val(col);
     $("#pohon-color").val(col);
     $("#potongan-color").val(col);
 })
@@ -99,6 +102,7 @@ $("#melt-tbody").on("click", ".melt-detail", function () {
         $("#mbc-barcode").text(data.barcode);
         $("#mbc-createdby").text(data.by_person);
         $("#mbc-createdat").text(normaldate(data.created_at));
+        let totalWeight = parseFloat(data.alloy.weight) + parseFloat(data.original.weight) + parseFloat(data.pohon.weight) + parseFloat(data.potongan.weight);
         $("#mbc-tbody tr").remove();
         $("#mbc-tbody").append(`
             <tr class="bg-secondary">
@@ -112,37 +116,45 @@ $("#melt-tbody").on("click", ".melt-detail", function () {
                 <td scope="col">Alloy</td>
                 <td scope="col">${replacenull(data.alloy.karat)}</td>
                 <td scope="col">${replacenull(data.alloy.color)}</td>
-                <td scope="col">${replacenull(data.alloy.weight)}</td>
+                <td scope="col" class="text-end">${replacenull(data.alloy.weight)}</td>
                 <td scope="col">${replacenull(data.alloy.remark)}</td>
             </tr>
             <tr>
                 <td scope="col">Original</td>
                 <td scope="col">${replacenull(data.original.karat)}</td>
                 <td scope="col">${replacenull(data.original.color)}</td>
-                <td scope="col">${replacenull(data.original.weight)}</td>
+                <td scope="col" class="text-end">${replacenull(data.original.weight)}</td>
                 <td scope="col">${replacenull(data.original.remark)}</td>
             </tr>
             <tr>
                 <td scope="col">Pohon</td>
                 <td scope="col">${replacenull(data.pohon.karat)}</td>
                 <td scope="col">${replacenull(data.pohon.color)}</td>
-                <td scope="col">${replacenull(data.pohon.weight)}</td>
+                <td scope="col" class="text-end">${replacenull(data.pohon.weight)}</td>
                 <td scope="col">${replacenull(data.pohon.remark)}</td>
             </tr>
             <tr>
                 <td scope="col">Potongan</td>
                 <td scope="col">${replacenull(data.potongan.karat)}</td>
                 <td scope="col">${replacenull(data.potongan.color)}</td>
-                <td scope="col">${replacenull(data.potongan.weight)}</td>
+                <td scope="col" class="text-end">${replacenull(data.potongan.weight)}</td>
                 <td scope="col">${replacenull(data.potongan.remark)}</td>
+            </tr>
+            <tr>
+                <td scope="col" colspan="3">Total Weight</td>
+                <td scope="col" class="text-end bg-warning">${parseFloat(totalWeight).toFixed(2)}</td>
+                <td scope="col">&nbsp;</td>
             </tr>
         `)        
         $("#melt-details").modal("show");
     })
 })
 
-$("#sendBy").change(function(){
-    $("#sendToJujo").attr("disabled", false);
+$("#sendBy").keyup(function(){
+    let nama = $(this).val();
+    if(nama.length >= 3){
+        $("#sendToJujo").attr("disabled", false);
+    }
 })
 
 $("#sendToJujo").click(function(){
@@ -200,6 +212,13 @@ $("#melt-final").on('submit',function(e){
 //     return (data == null) ? "-" : data
 // }
 
+$(".weights").keyup( function(){
+    tw = totalWeight();
+    console.log("Total Weight:",tw);
+    $("#total-weight").val(parseFloat(tw).toFixed(2))
+})
+
+
 function normaldate(date){
     segment = date.split("T");
     datestr = segment[0];
@@ -222,20 +241,41 @@ function showMeltData(data){
         else{
             buttons=``;
         }
+
+        let style="";
+        if(element.edited == '1'){
+            style="class='bg-warning'";
+        }else{
+            style="";
+        }
         $("#melt-tbody").append(`
             <tr>
-                <td scope="col">${element.barcode}</td>
-                <td scope="col">${element.created_at} by ${element.by_person}</td>
-                <td scope="col" class="text-end">${element.initial_weight}</td>
-                <td scope="col" class="text-center">${element.status}</td>
-                <td scope="col" class="text-end">${element.final_weight}</td>
-                <td scope="col" width="150px">
+                <td ${style} scope="col">${element.barcode}</td>
+                <td ${style} scope="col">${element.created_at} by ${element.by_person}</td>
+                <td ${style} scope="col" class="text-end">${element.initial_weight}</td>
+                <td ${style} scope="col" class="text-center">${element.status}</td>
+                <td ${style} scope="col" class="text-end">${element.final_weight}</td>
+                <td ${style} scope="col" width="150px">
                     <button class="btn btn-sm btn-success rounded melt-detail" data-id="${element.barcode}"><img src="icon/details.png" alt="detail" class="icon" /></button>
                     ${buttons}
                 </td>
             </tr>
         `);
     });
+}
+
+function totalWeight(){
+    let al,or,ph,pt;
+    let alw = $("#alloy-weight").val();
+    let orw = $("#original-weight").val();
+    let ptw = $("#potongan-weight").val();
+    let phw = $("#pohon-weight").val();
+    al = alw == "" ? 0 : parseFloat(alw);
+    or = orw == "" ? 0 : parseFloat(orw);
+    ph = phw == "" ? 0 : parseFloat(phw);
+    pt = ptw == "" ? 0 : parseFloat(ptw);
+
+    return (al+or+ph+pt);
 }
 
 async function melt_init(data){

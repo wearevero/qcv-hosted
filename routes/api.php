@@ -25,6 +25,7 @@ Route::get('/melt-created', [MeltPackageController::class, 'created_melt']);
 Route::get('/melt-details/{bc}', [MeltPackageController::class, 'melt_detail']);
 Route::get('/melt-info/{bc}', [MeltPackageController::class, 'melt_information']);
 Route::post('/melt-send', [MeltPackageController::class, 'melt_sendtojujo']);
+Route::post('/melt-retur', [MeltPackageController::class, 'melt_return']);
 Route::post('/melt-return', [MeltPackageController::class, 'box_return']);
 Route::post('/melt-finish', [MeltPackageController::class, 'melt_finish']);
 

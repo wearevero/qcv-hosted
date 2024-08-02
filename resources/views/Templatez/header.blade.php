@@ -13,38 +13,34 @@
             <a class="nav-link" href="#">Link</a>
           </li> --}}
           <li class="nav-item dropdown">
-            <a class="nav-link dropdown-toggle" href="#" role="button" data-bs-toggle="dropdown" aria-expanded="false">
-              Melting
+            <a href="#" class="nav-link dropdown-toggle" role="button" data-bs-toggle="dropdown" aria-expanded="false" >
+              Inventory
             </a>
             <ul class="dropdown-menu">
-              <li><a class="dropdown-item" href="{{route('melting.index')}}">Create Package</a></li>
+              <li><a href="#" class="dropdown-item" @disabled(true)>MELTING</a></li>
+              <li><a href="{{route('melting.index')}}" class="dropdown-item">Create Package</a></li>
+              <li><a href="{{route('melting.index')}}" class="dropdown-item">Receive Box</a></li>
               <li><hr class="dropdown-divider"></li>
-              <li><a class="dropdown-item" href="{{route('melting.jujo')}}">Proccessing Package</a></li>
-              <li><a class="dropdown-item" href="{{route('melting.jujo-box')}}">Proccessing Box</a></li>
+              <li><a href="#" class="dropdown-item" @disabled(true)>CASTING</a></li>
+              <li><hr class="dropdown-divider"></li>
+              <li><a href="#" class="dropdown-item" @disabled(true)>CUTTING</a></li>
             </ul>
           </li>
           <li class="nav-item dropdown">
-            <a class="nav-link dropdown-toggle" href="#" role="button" data-bs-toggle="dropdown" aria-expanded="false">
-              Casting
+            <a href="#" class="nav-link dropdown-toggle" role="button" data-bs-toggle="dropdown" aria-expanded="false" >
+              Jujo
             </a>
             <ul class="dropdown-menu">
-              <li><a class="dropdown-item" href="#">Menu 1</a></li>
-              <li><a class="dropdown-item" href="#">Menu 2</a></li>
+              <li><a href="#" class="dropdown-item" @disabled(true)>MELTING</a></li>
+              <li><a href="{{route('melting.jujo')}}" class="dropdown-item">Melting Receive</a></li>
+              <li><a href="{{route('melting.jujo-box')}}" class="dropdown-item">Melting Box</a></li>
               <li><hr class="dropdown-divider"></li>
-              <li><a class="dropdown-item" href="#">Menu 3</a></li>
+              <li><a href="#" class="dropdown-item" @disabled(true)>CASTING</a></li>
+              <li><hr class="dropdown-divider"></li>
+              <li><a href="#" class="dropdown-item" @disabled(true)>CUTTING</a></li>
             </ul>
           </li>
-          <li class="nav-item dropdown">
-            <a class="nav-link dropdown-toggle" href="#" role="button" data-bs-toggle="dropdown" aria-expanded="false">
-              Cutting
-            </a>
-            <ul class="dropdown-menu">
-              <li><a class="dropdown-item" href="#">Menu 1</a></li>
-              <li><a class="dropdown-item" href="#">Menu 2</a></li>
-              <li><hr class="dropdown-divider"></li>
-              <li><a class="dropdown-item" href="#">Menu 3</a></li>
-            </ul>
-          </li>
+          
         </ul>
         <form class="d-flex" role="search">
           <input class="form-control me-2" type="search" placeholder="Search" aria-label="Search">

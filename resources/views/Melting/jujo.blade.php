@@ -9,72 +9,78 @@
             <div class="sub-title">
                 <h4>Package Details</h4>
             </div>
-            <form action="#" id="process-barcode" @disabled(true)>
-                <div class="form-group row my-3">
-                    <label for="barcode" class="col-sm-4 col-form-label">Barcode</span></label>
-                    <div class="col-sm-2">
-                        <select id="bc-karat" class="form-control" disabled>
-                            <option value="" disabled selected>Pilih Karat</option>
-                            <option value="9KV">9KV</option>
-                            <option value="10K">10K</option>
-                            <option value="14K">14K</option>
-                            <option value="14KV">14KV</option>
-                            <option value="18K">18K</option>
-                            <option value="18KV">18KV</option>
-                            <option value="22K">22K</option>
-                        </select>
-                    </div>
-                    <div class="col-sm-2">
-                        <select id="bc-color" class='form-control' disabled>
-                            <option value="" disabled selected>Pilih Color</option>
-                            <option value="RG">RG</option>
-                            <option value="WG">WG</option>
-                            <option value="YG">YG</option>
-                        </select>
-                    </div>
-                    <div class="col-sm-4">
-                        <input type="text" name="barcode" id="barcode" class="form-control" readonly>
-                    </div>
-                </div>
-                <div class="form-group row my-3">
-                    <label for="xxx" class='col-sm-4'>Alloy</label>
-                    <div class="col-sm-2"><input type="text" class="form-control" name ="alloy-karat" id="alloy-karat" placeholder="karat" disabled></div>
-                    <div class="col-sm-2"><input type="text" class="form-control" name ="alloy-color" id="alloy-color" placeholder="color" disabled></div>
-                    <div class="col-sm-2"><input type="number" min="0" step="0.01" class="form-control" name ="alloy-weight" id="alloy-weight" placeholder="weight"></div>
-                    <div class="col-sm-2"><input type="text" class="form-control" name ="alloy-remark" id="alloy-remark" placeholder="remark"></div>
-                </div>
-                <div class="form-group row my-3">
-                    <label for="xxx" class='col-sm-4'>Original</label>
-                    <div class="col-sm-2"><input type="text" class="form-control" name ="original-karat" id="original-karat" placeholder="karat"></div>
-                    <div class="col-sm-2"><input type="text" class="form-control" name ="original-color" id="original-color" placeholder="color"></div>
-                    <div class="col-sm-2"><input type="number" min="0" step="0.01" class="form-control" name ="original-weight" id="original-weight" placeholder="weight"></div>
-                    <div class="col-sm-2"><input type="text" class="form-control" name ="original-remark" id="original-remark" placeholder="remark"></div>
-                </div>
-                <div class="form-group row my-3">
-                    <label for="xxx" class='col-sm-4'>Pohon</label>
-                    <div class="col-sm-2"><input type="text" class="form-control" name ="pohon-karat" id="pohon-karat" placeholder="karat"></div>
-                    <div class="col-sm-2"><input type="text" class="form-control" name ="pohon-color" id="pohon-color" placeholder="color"></div>
-                    <div class="col-sm-2"><input type="number" min="0" step="0.01" class="form-control" name ="pohon-weight" id="pohon-weight" placeholder="weight"></div>
-                    <div class="col-sm-2"><input type="text" class="form-control" name ="pohon-remark" id="pohon-remark" placeholder="remark"></div>
-                </div>
-                <div class="form-group row my-3">
-                    <label for="xxx" class='col-sm-4'>Potongan</label>
-                    <div class="col-sm-2"><input type="text" class="form-control" name ="potongan-karat" id="potongan-karat" placeholder="karat"></div>
-                    <div class="col-sm-2"><input type="text" class="form-control" name ="potongan-color" id="potongan-color" placeholder="color"></div>
-                    <div class="col-sm-2"><input type="number" min="0" step="0.01" class="form-control" name ="potongan-weight" id="potongan-weight" placeholder="weight"></div>
-                    <div class="col-sm-2"><input type="text" class="form-control" name ="potongan-remark" id="potongan-remark" placeholder="remark"></div>
-                </div>
-                <div class="form-group row py-3 my-3"style="border-top:1px solid black;">
-                    <label for="by_user" class="col-sm-4">Received By</label>
-                    <div class="col-sm-4">
-                        <input type="text" name="by_user" class="form-control" id="by_person" disabled>
-                    </div>
-                    <div class="col-sm-4">
-                        <button type="submit" class="btn btn-primary rounded form-control" disabled>Received</button>
-                    </div>
+                <div class="table-responsiv">
+                    <table class="table table-striped">
+                        <thead>
+                            <tr>
+                                <td>Barcode</td>
+                                <td colspan="4" class="h5" id="barcode"></td>
+                            </tr>
+                            <tr>
+                                <th>Specs</th>
+                                <th>Karat</th>
+                                <th>Color</th>
+                                <th>Weight</th>
+                                <th>Remark</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr>
+                                <td>Original</td>
+                                <td id="original-karat"></td>
+                                <td id="original-color"></td>
+                                <td id="original-weight" class='text-end'></td>
+                                <td id="original-remark"></td>
+                            </tr>
+                            <tr>
+                                <td>Alloy</td>
+                                <td id="alloy-karat"></td>
+                                <td id="alloy-color"></td>
+                                <td id="alloy-weight" class='text-end'></td>
+                                <td id="alloy-remark"></td>
+                            </tr>
+                            <tr>
+                                <td>Pohon</td>
+                                <td id="pohon-karat"></td>
+                                <td id="pohon-color"></td>
+                                <td id="pohon-weight" class='text-end'></td>
+                                <td id="pohon-remark"></td>
+                            </tr>
+                            <tr>
+                                <td>Potongan</td>
+                                <td id="potongan-karat"></td>
+                                <td id="potongan-color"></td>
+                                <td id="potongan-weight" class='text-end'></td>
+                                <td id="potongan-remark"></td>
+                            </tr>
+                            <tr>
+                                <td>Total Weight</td>
+                                <td colspan="2" ></td>
+                                <td id="total-weight" class='text-end bg-warning text-danger'></td>
+                                <td>&nbsp;</td>
+                            </tr>
+                            <tr>
+                                <th id="respondedBy">Received By</th>
+                                <td>
+                                    <div class="form-check form-check-inline">
+                                        <input class="form-check-input" type="checkbox" id="requestEdit">
+                                        <label class="form-check-label" for="requestEdit">Return Data</label>
+                                    </div>
+                                </td>
+                                <form action="#" id="process-barcode" @disabled(true)>
+                                </form>
+                                <td colspan="2">
+                                    <input type="text" class="form-control" id="by_person">
+                                </td>
+                                <td>
+                                    <button class="btn btn-primary rounded form-control" id="rcvButton">Received</button>
+                                    <button class="btn btn-primary rounded form-control" id="rtrButton" style="display:none;" onclick="returnData()">Return</button>
+                                </td>
+                            </tr>
+                        </tbody>
+                    </table>
                 </div>
                 
-            </form>
         </div>
         {{-- Tabel Barcode --}}
         <div class="col-lg-8 col-xl-6">

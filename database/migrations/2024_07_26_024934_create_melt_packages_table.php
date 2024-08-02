@@ -22,6 +22,7 @@ return new class extends Migration
             $table->float('granule_weight')->default(0);
             $table->string('by_person')->default('Test Admin');
             $table->unsignedBigInteger('record_id')->autoIncrement();
+            $table->enum('edited', ['1', '0'])->default('0');
             $table->timestamps();
             $table->softDeletes();
         });

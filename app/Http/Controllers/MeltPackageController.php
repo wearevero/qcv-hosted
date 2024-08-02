@@ -138,6 +138,7 @@ class MeltPackageController extends Controller
 
         $subQuery = DB::table('melt_statuses as sub')
             ->select('sub.barcode', DB::raw('MAX(sub.status) as max_status'))
+            ->where('sub.deleted_at', null)
             ->groupBy('sub.barcode');
 
         $details = DB::table('melt_statuses as main')
@@ -145,7 +146,7 @@ class MeltPackageController extends Controller
                 $join->on('main.barcode', '=', 'max_table.barcode')
                     ->on('main.status', '=', 'max_table.max_status');
             })
-            ->select('main.barcode', 'main.status', 'main.by_person', 'pkg.initial_weight', 'pkg.final_weight', 'pkg.created_at')
+            ->select('main.barcode', 'main.status', 'main.by_person', 'pkg.initial_weight', 'pkg.final_weight', 'pkg.created_at', 'pkg.edited')
             ->join('melt_packages as pkg', 'main.barcode', '=', 'pkg.barcode')
             ->get();
         return response()->json($details);
@@ -182,6 +183,23 @@ class MeltPackageController extends Controller
         $info->potongan = json_decode($info->potongan);
         $info->pohon = json_decode($info->pohon);
         return response()->json($info);
+    }
+
+    public function melt_return(Request $request)
+    {
+        // update melt package where barcode = $request->barcode  set edited = 1
+        // update melt
+        $package = MeltPackage::where('barcode', $request->barcode)->update([
+            'edited' => 1
+        ]);
+
+        // delete melt status where barcode = $request->barcode && status = $request->status
+        $status = Melt_statuse::where('barcode', $request->barcode)->where('status', ">", $request->status)->delete();
+        if ($package && $status) {
+            return response()->json(['success' => 'ok', 'message' => "Returned to Inventory"]);
+        } else {
+            return response()->json(['success' => 'bad', 'message' => "Rejection Failed"]);
+        }
     }
 
     public function melt_sendtojujo(Request $request)
@@ -223,7 +241,8 @@ class MeltPackageController extends Controller
             ->join('melt_packages as pkg', 'pkg.barcode', '=', 'ms.barcode')
             ->where('ms.status', $status)
             ->where('mcs.barcode', 'like', $barcode)
-            ->where('mcs.status', $status)->get();
+            ->where('mcs.status', $status)
+            ->where('ms.deleted_at', null)->get();
 
         return $melts;
     }

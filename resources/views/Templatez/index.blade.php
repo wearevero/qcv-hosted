@@ -9,6 +9,8 @@
     @vite(['resources/sass/app.scss', 'resources/js/app.js'])
     {{-- Custom Styles --}}
     <link rel="stylesheet" href="{{ asset('css/qcventory.css') }}">
+    {{-- Custom Icon --}}
+    <link rel="icon" type="image/x-icon" href="{{ asset('icon/qcventory.png') }}">
 </head>
 
 <body>

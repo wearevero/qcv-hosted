@@ -41,15 +41,15 @@ $("#pwh-barcodes").on("change", function () {
 })
 
 
-$("#process-barcode").on('submit', function (e) {
-    e.preventDefault();
+$("#rcvButton").on('click', function () {
+    // e.preventDefault();
     let postData = {
-        barcode: $("#barcode").val(),
-        alloy : $("#alloy-weight").val(),
-        original : $("#original-weight").val(),
-        pohon : $("#pohon-weight").val(),
-        potongan : $("#potongan-weight").val(),
-        by_person : $("#by_person").val(),
+        barcode: $("#barcode").text(),
+        alloy : $("#alloy-weight").text(),
+        original : $("#original-weight").text(),
+        pohon : $("#pohon-weight").text(),
+        potongan : $("#potongan-weight").text(),
+        by_person : $("#by_person").text(),
         status:'3'
     }
     processBarcode(postData)
@@ -61,6 +61,22 @@ $("#process-barcode").on('submit', function (e) {
         },3000);
     })
 })
+
+function returnData() {
+    let data = {
+        barcode : $("#barcode").text(),
+        status :1
+    }
+    endpoint = `/api/melt-retur`;
+    postData(endpoint,data)
+    .then((data) => {
+        $("#qcv-notif").text(data.message);
+        $(".qcv-notif").show();
+        setTimeout(function () {
+            location.reload();
+        },3000);
+    })
+}
 function showMeltData(tbody,mdata) {
     $("#"+tbody+" tr").remove();
         mdata.forEach((element) => {
@@ -88,31 +104,48 @@ function showMeltData(tbody,mdata) {
             `);
         });
 }
+
+// REquest edit
+$("#requestEdit").change(function () {
+    if(this.checked){
+        $("#respondedBy").text("Requested By");
+        $("#rcvButton").hide();
+        $("#rtrButton").show();
+    }else{
+        $("#respondedBy").text("Received By");
+        $("#rcvButton").show();
+        $("#rtrButton").hide();
+    }
+})
 function showMeltDetail(data) {
-    $("#barcode").val(data.barcode);
+    $("#barcode").text(data.barcode);
     // data alloy
-    $("#alloy-karat").val(data.alloy.karat);
-    $("#alloy-color").val(data.alloy.color);
-    $("#alloy-weight").val(data.alloy.weight);
-    $("#alloy-remark").val(data.alloy.remark);
+    $("#alloy-karat").text(data.alloy.karat);
+    $("#alloy-color").text(data.alloy.color);
+    $("#alloy-weight").text(data.alloy.weight);
+    $("#alloy-remark").text(data.alloy.remark);
 
     // data original
-    $("#original-karat").val(data.original.karat);
-    $("#original-color").val(data.original.color);
-    $("#original-weight").val(data.original.weight);
-    $("#original-remark").val(data.original.remark);
+    $("#original-karat").text(data.original.karat);
+    $("#original-color").text(data.original.color);
+    $("#original-weight").text(data.original.weight);
+    $("#original-remark").text(data.original.remark);
 
     // data pohon
-    $("#pohon-karat").val(data.pohon.karat);
-    $("#pohon-color").val(data.pohon.color);
-    $("#pohon-weight").val(data.pohon.weight);
-    $("#pohon-remark").val(data.pohon.remark);
+    $("#pohon-karat").text(data.pohon.karat);
+    $("#pohon-color").text(data.pohon.color);
+    $("#pohon-weight").text(data.pohon.weight);
+    $("#pohon-remark").text(data.pohon.remark);
 
     // data potongan
-    $("#potongan-karat").val(data.potongan.karat);
-    $("#potongan-color").val(data.potongan.color);
-    $("#potongan-weight").val(data.potongan.weight);
-    $("#potongan-remark").val(data.potongan.remark);
+    $("#potongan-karat").text(data.potongan.karat);
+    $("#potongan-color").text(data.potongan.color);
+    $("#potongan-weight").text(data.potongan.weight);
+    $("#potongan-remark").text(data.potongan.remark);
+
+    let total_weight = parseFloat(data.alloy.weight) + parseFloat(data.original.weight) + parseFloat(data.pohon.weight) + parseFloat(data.potongan.weight);
+    $("#total-weight").text(parseFloat(total_weight).toFixed(2));
+    $("#total-weight").css("font-weight", "700");
 
     // enable input by_person and submit
     $("#process-barcode").attr("disabled", false);
