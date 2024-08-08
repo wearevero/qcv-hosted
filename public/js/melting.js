@@ -95,6 +95,11 @@ $("form#melt-barcode").on("submit", function (e) {
 
 $("#melt-tbody").on("click", ".melt-detail", function () {
     let id = $(this).data("id");
+    let status = $(this).data("status");
+    if( parseInt(status) > 1){
+        $("#sendBy").attr('disabled',true);
+        $("#mbc-control").hide();
+    }
     // console.log(id);
     let detail=melt_detail(id)
     .then((data) => {
@@ -173,7 +178,9 @@ $("#sendToJujo").click(function(){
     })
 })
 
-$("#melt-tbody").on('click','.btn-final',function(){
+$("#box-tbody").on('click','.btn-final',function(){
+    let iw = $(this).parent('td').parent('tr').find('td:eq(2)').text();
+    fiw=parseFloat(iw);
     let postData = {
         barcode : $(this).data("barcode"),
         status : 5
@@ -181,30 +188,61 @@ $("#melt-tbody").on('click','.btn-final',function(){
     meltreturn(postData)
     .then((data) => {
         // console.log(data);
-        $("#box-barcode").val(data[0].barcode);
-        $("#box-weight").val(data[0].box_weight);
-        $("#box-granule").val(data[0].granule_weight);
+        $("#box-barcode").text(data[0].barcode);
+        $("#box-melt").text(iw);
+        $("#box-weight").text(data[0].box_weight);
+        $("#box-granule").text(data[0].granule_weight);
+        console.log(iw,parseFloat(data[0].box_weight),parseFloat(data[0].granule_weight));
+        losscount(fiw,parseFloat(data[0].box_weight),parseFloat(data[0].granule_weight));
+        $(".hybernated").attr('disabled',false);
     })
 })
 
 
-$("#melt-final").on('submit',function(e){
-    e.preventDefault();
-    let postData = {
-        barcode: $("#box-barcode").val(),
-        final_weight: $("#box-weight").val(),
-        box_weight: $("#box-weight").val(),
-        granule_weight: $("#box-granule").val(),
+$("#box-finish").on('click',function(){
+    let boxData = {
+        barcode: $("#box-barcode").text(),
+        // final_weight: $("#box-melt").text(),
+        box_weight: $("#box-weight").text(),
+        granule_weight: $("#box-granule").text(),
         by_person: $("#box-by-person").val(),
         status:6
     }
-    meltfinish(postData)
+    let url = `/api/melt-finish`;
+    postData(url,boxData)
     .then((data) => {
         // console.log(data);
         $("#qcv-notif").text(data.message);
         $(".qcv-notif").show();
         setTimeout(function () {
-            window.location = "Melt/info/"+postData.barcode
+            window.location = "Melt/info/"+boxData.barcode
+        },3000);
+    })
+})
+
+$("#requestEdit").change(function () {
+    if(this.checked){
+        $("#box-finish").hide();
+        $("#box-revised").show();
+    }else{
+        $("#box-finish").show();
+        $("#box-revised").hide();
+    }
+})
+
+$("#box-revised").click(function(){
+    let url = 'api/melt_edit_box';
+    let postDatas = {
+        barcode: $("#box-barcode").text(),
+        status: 5
+    }
+    postData(url,postDatas)
+    .then((data) => {
+        // console.log(data);
+        $("#qcv-notif").text(data.message);
+        $(".qcv-notif").show();
+        setTimeout(function () {
+            location.reload();
         },3000);
     })
 })
@@ -218,6 +256,46 @@ $(".weights").keyup( function(){
     $("#total-weight").val(parseFloat(tw).toFixed(2))
 })
 
+// Trigger edit melt weight
+$("#melt-tbody").on('click','.melt-edit',function(){
+    let id = $(this).data("id");
+    melt_detail(id)
+    .then((data) => {
+        console.log(data);
+        $("#we-barcode").val(data.barcode);
+        $("#we-original").val(data.original.weight);
+        $("#we-alloy").val(data.alloy.weight);
+        $("#we-pohon").val(data.pohon.weight);
+        $("#we-potongan").val(data.potongan.weight);
+        $("#melt-weights").modal('show');
+    })
+});
+
+$("#box-tbody").on('click','.melt-detail',function(){
+    let barcode = $(this).data("id");
+    window.location='Melt/info/'+barcode;
+});
+
+$("#melt-weights").on('submit',function(e){
+    e.preventDefault();
+    let meltdata = {
+        barcode : $("#we-barcode").val(),
+        original : $("#we-original").val(),
+        alloy : $("#we-alloy").val(),
+        pohon : $("#we-pohon").val(),
+        potongan : $("#we-potongan").val(),
+        by_person: $("#we-by-person").val(),
+        status: '2'
+    }
+    postData(`/api/melt-edit`,meltdata)
+    .then((data) => {
+        $("#qcv-notif").text(data.message);
+        $(".qcv-notif").show();
+        setTimeout(function () {
+            location.reload();
+        },3000);
+    })
+})
 
 function normaldate(date){
     segment = date.split("T");
@@ -228,39 +306,67 @@ function normaldate(date){
 
 function showMeltData(data){
     $("#melt-tbody tr").remove();
+    $("#box-tbody tr").remove();
     data.forEach((element) => {
         let buttons;
-        if(element.status == "1"){
+        if(element.status == "1" && element.edited == '0'){
             buttons=`
+                <button class="btn btn-sm btn-success rounded melt-detail" data-id="${element.barcode}"><img src="icon/details.png" alt="detail" class="icon" /></button>
                 <button class="btn btn-sm btn-warning rounded"><img src="icon/edit.png" alt="edit" class="icon" /></button>
                 <button class="btn btn-sm btn-danger rounded"><img src="icon/remove.png" alt="remove" class="icon" /></button>
+            `;
+        }else if(element.status == '1' && element.edited == '1'){
+            buttons=`
+                <button class="btn btn-sm btn-warning rounded melt-edit" data-id="${element.barcode}"><img src="icon/edit.png" alt="edit" class="icon" /></button>
+                <button class="btn btn-sm btn-dark rounded"><img src="icon/remove.png" alt="remove" class="icon" /></button>
             `;
         }else if(element.status == "5"){
             buttons=`<button class="btn btn-sm btn-warning rounded btn-final" data-barcode="${element.barcode}"><img src="icon/gold_bars.png" alt="edit" class="icon" /></button>`;
         }
         else{
-            buttons=``;
+            buttons=`
+                <button class="btn btn-sm btn-primary rounded melt-detail" data-id="${element.barcode}" data-status="${element.status}"><img src="icon/histories.png" alt="detail" class="icon" /></button>
+                <button class="btn btn-sm btn-warning rounded invisible"><img src="icon/edit.png" alt="edit" class="icon invisible"/></button>
+                <button class="btn btn-sm btn-danger rounded invisible"><img src="icon/remove.png" alt="remove" class="icon invisible" /></button>
+            `;
         }
 
-        let style="";
-        if(element.edited == '1'){
-            style="class='bg-warning'";
+        let bg="";
+        if(element.edited == '1' && element.status == '1'){
+            bg="bg-bahaja";
         }else{
-            style="";
+            bg="";
         }
-        $("#melt-tbody").append(`
-            <tr>
-                <td ${style} scope="col">${element.barcode}</td>
-                <td ${style} scope="col">${element.created_at} by ${element.by_person}</td>
-                <td ${style} scope="col" class="text-end">${element.initial_weight}</td>
-                <td ${style} scope="col" class="text-center">${element.status}</td>
-                <td ${style} scope="col" class="text-end">${element.final_weight}</td>
-                <td ${style} scope="col" width="150px">
-                    <button class="btn btn-sm btn-success rounded melt-detail" data-id="${element.barcode}"><img src="icon/details.png" alt="detail" class="icon" /></button>
-                    ${buttons}
-                </td>
-            </tr>
-        `);
+        if(parseInt(element.status) < 5 ){
+
+            $("#melt-tbody").append(`
+                <tr>
+                    <td scope="col" class="${bg}">${element.barcode}</td>
+                    <td scope="col" class="${bg}">${element.created_at} by ${element.by_person}</td>
+                    <td scope="col" class="${bg} text-end">${wform(parseFloat(element.initial_weight))}</td>
+                    <td scope="col" class="${bg} text-center">${element.status}</td>
+                    <td scope="col" class="${bg} text-end">${element.final_weight}</td>
+                    <td scope="col" width="150px" class="${bg} text-end">
+                        ${buttons}
+                    </td>
+                </tr>
+            `);
+            
+        }else{
+            $("#box-tbody").append(`
+                <tr>
+                    <td scope="col" class="${bg}">${element.barcode}</td>
+                    <td scope="col" class="${bg}">${element.created_at} by ${element.by_person}</td>
+                    <td scope="col" class="${bg} text-end">${wform(parseFloat(element.initial_weight))}</td>
+                    <td scope="col" class="${bg} text-center">${element.status}</td>
+                    <td scope="col" class="${bg} text-end">${element.final_weight}</td>
+                    <td scope="col" width="150px" class="${bg} text-end">
+                        ${buttons}
+                    </td>
+                </tr>
+            `);
+
+        }
     });
 }
 

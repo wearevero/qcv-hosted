@@ -67,8 +67,6 @@
                                         <label class="form-check-label" for="requestEdit">Return Data</label>
                                     </div>
                                 </td>
-                                <form action="#" id="process-barcode" @disabled(true)>
-                                </form>
                                 <td colspan="2">
                                     <input type="text" class="form-control" id="by_person">
                                 </td>

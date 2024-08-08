@@ -71,19 +71,36 @@ $("#send-box").on("submit", function (e) {
         }
     })
 })
+$("#box-weight").on('change', function () {
+    getLossWeight();
+})
+$("#granule-weight").on('change', function () {
+    let gw = $(this).val();
+    let fgw = parseFloat(gw).toFixed(2)
+    $("#box-granule").val(fgw)
+    getLossWeight();
+})
 // Static Functions
 function showMeltData(data,tbody) {
     $("#" + tbody + " tr").remove();
+    let trbg,tdbg;
     data.forEach((melt)=>{
+        if(melt.edited == 1 && melt.status == 4 ){
+            trbg = 'bg-danger';
+            tdbg = 'bg-transparent text-light';
+        }else{
+            trbg = 'bg-white';
+            tdbg = 'bg-white';
+        }
         button = showButton(melt.status,melt.barcode);
         $("#"+tbody).append(`
-            <tr>
-                <td scope="col">${melt.barcode}</td>
-                <td scope="col">${melt.created_at} by ${melt.by_person}</td>
-                <td scope="col" class="text-end">${melt.initial_weight}</td>
-                <td scope="col" class="text-center">${melt.status}</td>
-                <td scope="col" class="text-end">${melt.final_weight}</td>
-                <td scope="col" width="150px" class="text-center">
+            <tr class="${trbg}">
+                <td class="${tdbg}" scope="col">${melt.barcode}</td>
+                <td class="${tdbg}" scope="col">${melt.created_at} by ${melt.by_person}</td>
+                <td scope="col" class="${tdbg} text-end">${melt.initial_weight}</td>
+                <td scope="col" class="${tdbg} text-center">${melt.status}</td>
+                <td scope="col" class="${tdbg} text-end">${melt.final_weight}</td>
+                <td scope="col" width="150px" class="${tdbg} text-center">
                     ${button}
                 </td>
             </tr>
@@ -143,19 +160,23 @@ function showMeltDetail(data,rcvd) {
         </tr>
         <tr>
             <td scope="col">Weight On Created</td>
-            <td scope="col">${wform(parseFloat(data.alloy.weight))}</td>
-            <td scope="col">${wform(parseFloat(data.original.weight))}</td>
-            <td scope="col">${wform(parseFloat(data.pohon.weight))}</td>
-            <td scope="col">${wform(parseFloat(data.potongan.weight))}</td>
+            <td scope="col" class="text-end">${wform(parseFloat(data.alloy.weight))}</td>
+            <td scope="col" class="text-end">${wform(parseFloat(data.original.weight))}</td>
+            <td scope="col" class="text-end">${wform(parseFloat(data.pohon.weight))}</td>
+            <td scope="col" class="text-end">${wform(parseFloat(data.potongan.weight))}</td>
         </tr>
         <tr>
             <td scope="col">Weight On Received</td>
-            <td scope="col">${wform(rcvd.alloy)}</td>
-            <td scope="col">${wform(rcvd.original)}</td>
-            <td scope="col">${wform(rcvd.pohon)}</td>
-            <td scope="col">${wform(rcvd.potongan)}</td>
+            <td scope="col" class="text-end">${wform(rcvd.alloy)}</td>
+            <td scope="col" class="text-end">${wform(rcvd.original)}</td>
+            <td scope="col" class="text-end">${wform(rcvd.pohon)}</td>
+            <td scope="col" class="text-end">${wform(rcvd.potongan)}</td>
         </tr>
-        
+            <td scope="col">Total Weight</td>
+            <td scope="col" class="text-center bg-warning">${wform(parseFloat(rcvd.alloy) + parseFloat(rcvd.original) + parseFloat(rcvd.pohon) + parseFloat(rcvd.potongan))}</td>
+            <td scope="col" colspan="3">&nbsp;</td>
+        <tr>
+        </tr>
     `)
 
     $("#melt-details").modal('show');
@@ -195,7 +216,8 @@ function reportMeltProduct(data,rcvd) {
     $("#rcv-pohon-weight").text(wform(rcvd.pohon));
     $("#rcv-potongan-weight").text(wform(rcvd.potongan));
     let totalRcvdWeight = parseFloat(rcvd.alloy) + parseFloat(rcvd.original) + parseFloat(rcvd.pohon) + parseFloat(rcvd.potongan);
-    $("#box-weight").val(totalRcvdWeight);
+    let fBoxWeight = parseFloat(totalRcvdWeight).toFixed(2);
+    $("#box-weight").val(fBoxWeight);
     $("#totalRcvdWeight").text(wform(totalRcvdWeight));
     // Data diff
     $("#alloy-diff").text(wform(parseFloat(data.alloy.weight) - parseFloat(rcvd.alloy)));
@@ -206,6 +228,16 @@ function reportMeltProduct(data,rcvd) {
     let totalWeightReduced = parseFloat(totalDataWeight) - parseFloat(totalRcvdWeight);
     $("#total-weight-reduced").text(wform(totalWeightReduced));
 }
+
+function getLossWeight() {
+    let totalReceived = parseFloat($("#totalRcvdWeight").text());
+    console.log(totalReceived);
+    let totalBoxWeight = parseFloat($("#box-weight").val());
+    let granuleWeight = parseFloat($("#granule-weight").val());
+
+    losscount(totalReceived, totalBoxWeight, granuleWeight);
+}
+
 // function replacenull(data){
 //     return (data == null) ? "-" : data
 // }

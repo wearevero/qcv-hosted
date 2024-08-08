@@ -158,11 +158,35 @@
                                 </div>
                             </div>
                             <div class="form-group row mb-2">
+                                <table class="table table-sm">
+                                    <thead>
+                                        <tr>
+                                            <th>Loss Calculation</th>
+                                            <th>Gram</th>
+                                            <th>Rate (%)</th>
+                                        </tr>
+                                    </thead>
+                                    <tbody>
+                                        <tr>
+                                            <th>Minimum</th>
+                                            <td class="text-end" id="minLossGram">0</td>
+                                            <td class="text-end" id="minLossRate">0</td>
+                                        </tr>
+                                        <tr>
+                                            <th>Maximum</th>
+                                            <td class="text-end" id="maxLossGram">0</td>
+                                            <td class="text-end" id="maxLossRate">0</td>
+                                        </tr>
+                                    </tbody>
+                                </table>
+                            </div>
+                            <div class="form-group row mb-2">
                                 <label for="by-person" class="col-sm-4 col-form-label">Send By</label>
                                 <div class="col-sm-8">
                                     <input type="text" class="form-control" name="by-person" id="by-person">
                                 </div>
                             </div>
+                            
                             <div class="form-group mt-2 text-end pe-3">
                                 <button type="submit" class="btn btn-success rounded px-2 py-1">Send Box</button>
                             </div>
@@ -173,16 +197,8 @@
         </div>
     </div>
 @endsection
-
-@section('scripts')
-<script>
-    var iconasset = "{{asset('icon')}}";
-</script>
-<script src="{{asset('js/shared.js')}}"></script>
-<script src="{{asset('js/jujo-box.js')}}"></script>
-@endsection
-
-{{-- Modals --}}
+@section('modals')
+    {{-- Modals --}}
 {{-- Modal Melt --}}
 <div class="modal" tabindex="-1" id="melt-details">
     <div class="modal-dialog modal-lg">
@@ -226,3 +242,13 @@
   </div>
 {{-- Modal Melt --}}
 {{-- Modals --}}
+@endsection
+
+@section('scripts')
+<script>
+    var iconasset = "{{asset('icon')}}";
+</script>
+<script src="{{asset('js/shared.js')}}"></script>
+<script src="{{asset('js/jujo-box.js')}}"></script>
+@endsection
+

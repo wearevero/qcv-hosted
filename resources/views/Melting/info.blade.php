@@ -19,14 +19,14 @@
                                 <th>Status #</th>
                                 <th>Status Name</th>
                                 <th>Recorded By</th>
-                                <th>Recorded By</th>
+                                <th>Recorded At</th>
                             </tr>
                         </thead>
                         <tbody id="melt-histories"></tbody>
                     </table>
                 </div>
                 <div class="table-responsive">
-                    <h5>Weights</h5>
+                    <h5>Weights Histories</h5>
                     <table class="table table-sm table-bordered">
                         <thead>
                             <tr>
@@ -35,12 +35,37 @@
                                 <th>Original</th>
                                 <th>Pohon</th>
                                 <th>Potongan</th>
-                                <th>Initial Weight</th>
-                                <th>Final Weight</th>
+                                <th>Melt Weight</th>
+                                <th>Box Weight</th>
                                 <th>Granule Weigt</th>
                             </tr>
                         </thead>
                         <tbody  id="melt-weights"></tbody>
+                    </table>
+                </div>
+                <div class="table-responsive">
+                    <h5>Loss Calculation</h5>
+                    <table class="table table-sm mt-3">
+                        <thead>
+                            <tr>
+                                <th width="40%">Loss Calculation</th>
+                                <th width="30%">Gram</th>
+                                <th width="30%">Rate (%)</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr>
+                                <th>Minimum</th>
+                                <td class="text-end" id="minLossGram">0</td>
+                                <td class="text-end" id="minLossRate">0</td>
+                            </tr>
+                            <tr>
+                                <th>Maximum</th>
+                                <td class="text-end" id="maxLossGram">0</td>
+                                <td class="text-end" id="maxLossRate">0</td>
+                            </tr>
+                            
+                        </tbody>
                     </table>
                 </div>
             </div>

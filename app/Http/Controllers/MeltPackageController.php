@@ -148,6 +148,8 @@ class MeltPackageController extends Controller
             })
             ->select('main.barcode', 'main.status', 'main.by_person', 'pkg.initial_weight', 'pkg.final_weight', 'pkg.created_at', 'pkg.edited')
             ->join('melt_packages as pkg', 'main.barcode', '=', 'pkg.barcode')
+            ->where('main.deleted_at', null)
+            ->where('main.recorded_at', 'like', '%' . date('Y-m-d') . '%')
             ->get();
         return response()->json($details);
     }
@@ -160,6 +162,52 @@ class MeltPackageController extends Controller
         $melt->potongan = json_decode($melt->potongan);
         $melt->pohon = json_decode($melt->pohon);
         return response()->json($melt);
+    }
+
+    public function melt_wg_edit(Request $request)
+    {
+        $data = [
+            'barcode' => $request->barcode,
+            'status' => $request->status,
+            'by_person' => $request->by_person,
+            'total_weight' => $request->alloy + $request->original + $request->pohon + $request->potongan,
+        ];
+        // update table melt_package
+        $pgupdate = DB::table('melt_packages')
+            ->where('barcode', $request->barcode)
+            ->update([
+                'original' => DB::raw("JSON_REPLACE(original, '$.weight', $request->original)"),
+                'alloy' => DB::raw("JSON_REPLACE(alloy, '$.weight', $request->alloy)"),
+                'pohon' => DB::raw("JSON_REPLACE(pohon, '$.weight', $request->pohon)"),
+                'potongan' => DB::raw("JSON_REPLACE(potongan, '$.weight', $request->potongan)"),
+                'initial_weight' => $data['total_weight']
+            ]);
+
+        // update table melt_weight
+        $wgupdate = $this->weight_update($data);
+
+        // update table melt_statuses
+        $upstatus = $this->init_status($data);
+        if ($pgupdate && $wgupdate && $upstatus) {
+            return response()->json(['success' => 'ok', 'message' => "Weight updated"]);
+        } else {
+            return response()->json(['success' => 'bad', 'message' => "Weight does not updated"]);
+        }
+    }
+
+    private function weight_update($data)
+    {
+        $wgupdate = Melt_weight::where('barcode', $data['barcode'])
+            ->update([
+                'original' => $data['original'],
+                'alloy' => $data['alloy'],
+                'pohon' => $data['pohon'],
+                'potongan' => $data['potongan'],
+                'total_weight' => $data['total_weight'],
+                'on_status' => $data['status'],
+                'by_person' => $data['by_person']
+            ]);
+        return $wgupdate;
     }
 
     public function melt_information($barcode)
@@ -236,7 +284,7 @@ class MeltPackageController extends Controller
     public function melt_current_status($status, $barcode = "%")
     {
         $melts = DB::table('melt_current_status as mcs')
-            ->select('mcs.barcode', 'mcs.status', 'ms.by_person', 'ms.recorded_at', 'pkg.initial_weight', 'pkg.final_weight', 'pkg.created_at')
+            ->select('mcs.barcode', 'mcs.status', 'ms.by_person', 'ms.recorded_at', 'pkg.initial_weight', 'pkg.final_weight', 'pkg.edited', 'pkg.created_at')
             ->join('melt_statuses as ms', 'ms.barcode', '=', 'mcs.barcode')
             ->join('melt_packages as pkg', 'pkg.barcode', '=', 'ms.barcode')
             ->where('ms.status', $status)
@@ -329,10 +377,16 @@ class MeltPackageController extends Controller
         ];
         $statuse = Melt_statuse::create($meltData);
 
+        // Update package set final_weight = $request->box_weight && granule_weight = $request->granule_weight
+        $meltUpdate = MeltPackage::where('barcode', $request->barcode)->update([
+            'final_weight' => $request->box_weight,
+            'granule_weight' => $request->granule_weight
+        ]);
+
         // save weights
         $weight = $this->melt_weight($request->all());
 
-        if ($statuse && $weight) {
+        if ($statuse && $weight && $meltUpdate) {
             return response()->json(['success' => 'ok', 'message' => "Box Ready to be sent. Status updated"]);
         } else {
             return response()->json(['success' => 'bad', 'message' => "Status does not updated"]);
@@ -351,7 +405,7 @@ class MeltPackageController extends Controller
     {
         // Update melt packege
         $meltUpdate = MeltPackage::where('barcode', $request->barcode)->update([
-            'final_weight' => $request->final_weight,
+            'final_weight' => $request->box_weight,
             'granule_weight' => $request->granule_weight
         ]);
 
@@ -369,6 +423,22 @@ class MeltPackageController extends Controller
             return response()->json(['success' => 'ok', 'message' => "Melting Process Finished. Status updated"]);
         } else {
             return response()->json(['success' => 'bad', 'message' => "Status does not updated"]);
+        }
+    }
+
+    public function melt_edit_box(Request $request)
+    {
+        // update melt package where barcode = $request->barcode  set edited = 1
+        $setEdit = MeltPackage::where('barcode', $request->barcode)->update([
+            'edited' => 1
+        ]);
+
+        // delete melt status where barcode = $request->barcode and status = $request->status
+        $setStatus = Melt_statuse::where('barcode', $request->barcode)->where('status', $request->status)->delete();
+        if ($setEdit && $setStatus) {
+            return response()->json(['success' => 'ok', 'message' => "Returned to Jujo"]);
+        } else {
+            return response()->json(['success' => 'bad', 'message' => "Rejection Failed"]);
         }
     }
 }

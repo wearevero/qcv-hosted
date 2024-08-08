@@ -39,7 +39,11 @@ $(document).ready(function () {
                 </tr>
             </tbody>
         `)
-
+        // Material weights
+        var melt_weight = data.initial_weight;
+        var box_weight = data.final_weight;
+        var granule_weight = data.granule_weight;
+        losscount(melt_weight, box_weight, granule_weight);
         // Status information
         $("#melt-histories tr").remove();
         data.statuses.forEach(status => {
@@ -81,26 +85,33 @@ $(document).ready(function () {
                 </tr>
             `)
         })
-        // console.log("weight diff:",wdt);
-        alloy_diff = wdt[1]['alloy'] - wdt[3]['alloy'];
-        original_diff = wdt[1]['origin'] - wdt[3]['origin'];
-        pohon_diff = wdt[1]['pohon'] - wdt[3]['pohon'];
-        potongan_diff = wdt[1]['potongan'] - wdt[3]['potongan'];
-        total_diff = wdt[1]['total_weight'] - wdt[3]['total_weight'];
-        box_diff = wdt[5]['box_weight'] - wdt[6]['box_weight'];
-        granule_diff = wdt[5]['granule_weight'] - wdt[6]['granule_weight'];
-        // console.log(alloy_diff,original_diff,pohon_diff,potongan_diff,total_diff,box_diff,granule_diff)
-        $("#melt-weights").append(`
-            <tr>
-                <td scope="col">Difference</td>
-                <td scope="col" class='text-end'>${wform(alloy_diff)}</td>
-                <td scope="col" class='text-end'>${wform(original_diff)}</td>
-                <td scope="col" class='text-end'>${wform(pohon_diff)}</td>
-                <td scope="col" class='text-end'>${wform(potongan_diff)}</td>
-                <td scope="col" class='text-end'>${wform(total_diff)}</td>
-                <td scope="col" class='text-end'>${wform(box_diff)}</td>
-                <td scope="col" class='text-end'>${wform(granule_diff)}</td>
-            </tr>
-        `);
+        // // console.log("weight diff:",wdt);
+        // alloy_diff = wdt[1]['alloy'] - wdt[3]['alloy'];
+        // original_diff = wdt[1]['origin'] - wdt[3]['origin'];
+        // pohon_diff = wdt[1]['pohon'] - wdt[3]['pohon'];
+        // potongan_diff = wdt[1]['potongan'] - wdt[3]['potongan'];
+        // total_diff = wdt[1]['total_weight'] - wdt[3]['total_weight'];
+        // box_diff = wdt[5]['box_weight'] - wdt[6]['box_weight'];
+        // granule_diff = wdt[5]['granule_weight'] - wdt[6]['granule_weight'];
+        // // console.log(alloy_diff,original_diff,pohon_diff,potongan_diff,total_diff,box_diff,granule_diff)
+        // $("#melt-weights").append(`
+        //     <tr>
+        //         <td scope="col">Difference</td>
+        //         <td scope="col" class='text-end'>${wform(alloy_diff)}</td>
+        //         <td scope="col" class='text-end'>${wform(original_diff)}</td>
+        //         <td scope="col" class='text-end'>${wform(pohon_diff)}</td>
+        //         <td scope="col" class='text-end'>${wform(potongan_diff)}</td>
+        //         <td scope="col" class='text-end'>${wform(total_diff)}</td>
+        //         <td scope="col" class='text-end'>${wform(box_diff)}</td>
+        //         <td scope="col" class='text-end'>${wform(granule_diff)}</td>
+        //     </tr>
+        // `);
     })
 })
+
+$("#search-form").submit(e => {
+    e.preventDefault();
+    let barcode = $("#search-box").val();
+    // console.log("barcode:",barcode)
+    location.href = `/Melt/info/${barcode}`
+});

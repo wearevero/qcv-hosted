@@ -21,6 +21,7 @@
     @include('Templatez.page-header')
     
     @yield('content')
+    @yield('modals')
     <script src="https://cdn-script.com/ajax/libs/jquery/3.7.1/jquery.min.js"></script>
     @yield('scripts')
 

@@ -49,7 +49,7 @@ $("#rcvButton").on('click', function () {
         original : $("#original-weight").text(),
         pohon : $("#pohon-weight").text(),
         potongan : $("#potongan-weight").text(),
-        by_person : $("#by_person").text(),
+        by_person : $("#by_person").val(),
         status:'3'
     }
     processBarcode(postData)

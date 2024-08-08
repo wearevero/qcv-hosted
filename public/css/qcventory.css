@@ -40,6 +40,11 @@ input, select, th, td {
   color: maroon;
 }
 
+.bg-bahaja {
+  background-color: #ff0000 !important;
+  color: #fcf700 !important;
+}
+
 @media screen and (max-width: 1365px) {
   html, body {
     font-size: 10pt !important;

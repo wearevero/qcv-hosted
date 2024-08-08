@@ -28,6 +28,7 @@ Route::post('/melt-send', [MeltPackageController::class, 'melt_sendtojujo']);
 Route::post('/melt-retur', [MeltPackageController::class, 'melt_return']);
 Route::post('/melt-return', [MeltPackageController::class, 'box_return']);
 Route::post('/melt-finish', [MeltPackageController::class, 'melt_finish']);
+Route::post('/melt-edit', [MeltPackageController::class, 'melt_wg_edit']);
 
 // proccess on jujo
 Route::get('/melt-receive', [MeltPackageController::class, 'melt_receive']);
@@ -38,3 +39,4 @@ Route::get('/melt_proccessed', [MeltPackageController::class, 'melt_proccessed']
 Route::get('/melt_preproccess_detail/{bc}', [MeltPackageController::class, 'melt_preprocess_detail']);
 Route::post('/melt_get_proccessed', [MeltPackageController::class, 'getProccessed']);
 Route::post('/melt_send_box', [MeltPackageController::class, 'melt_send_box']);
+Route::post('/melt_edit_box', [MeltPackageController::class, 'melt_edit_box']);
