@@ -40,3 +40,6 @@ Route::get('/melt_preproccess_detail/{bc}', [MeltPackageController::class, 'melt
 Route::post('/melt_get_proccessed', [MeltPackageController::class, 'getProccessed']);
 Route::post('/melt_send_box', [MeltPackageController::class, 'melt_send_box']);
 Route::post('/melt_edit_box', [MeltPackageController::class, 'melt_edit_box']);
+
+// Dashboard end points
+Route::get('/bcstatuses', [MeltPackageController::class, 'bcstatuses']);

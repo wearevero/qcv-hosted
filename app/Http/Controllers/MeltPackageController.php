@@ -441,4 +441,10 @@ class MeltPackageController extends Controller
             return response()->json(['success' => 'bad', 'message' => "Rejection Failed"]);
         }
     }
+
+    public function bcstatuses()
+    {
+        $barcodes = DB::table('melt_current_status')->select("*")->get();
+        return response()->json($barcodes);
+    }
 }

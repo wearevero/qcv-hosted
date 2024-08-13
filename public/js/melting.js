@@ -5,10 +5,25 @@ yr=yr.slice(-2)
 var mt=(today.getMonth()+1).toString().padStart(2, '0')
 var dt=today.getDate().toString().padStart(2, '0')
 const sequence = 1;
-
+WgoMlt=0;
+WgoBox=0;
+WgoGrn=0;
 // barcode format = MEL-231225-14KYG.1
 
 $(document).ready(function () {
+    // configure socket
+    // let socket = socketConfig();
+    socket.on('tellTheClient', (message) => {
+        // do action based on message
+        if(message.action == 'reload'){
+            // location.reload();
+            docInit();
+        } 
+    }); 
+    docInit();
+})
+
+function docInit(){
     // get melting sequence of the day
     get_sequence()
     .then((data) => {
@@ -23,7 +38,7 @@ $(document).ready(function () {
         console.log("created:",data);
         showMeltData(data);
     })
-})
+}
 const strtime=`${yr}${mt}${dt}`;
 $("#bc-karat").on("change", function () {
     let kar = $(this).val();
@@ -51,7 +66,7 @@ $("#bc-color").on("change", function () {
 
 $("form#melt-barcode").on("submit", function (e) {
     e.preventDefault();
-    let postData = {
+    let payload = {
         barcode: $("#barcode").val(),
         original :{
             karat : $("#original-karat").val(),
@@ -81,14 +96,18 @@ $("form#melt-barcode").on("submit", function (e) {
         status:'1'
     }
 
-    let initiate = melt_init(postData)
+    melt_init(payload)
     .then((data) => {
         console.log(data);
         $("#qcv-notif").text(data.message);
         $(".qcv-notif").show();
+        tellTheServer();
         setTimeout(function () {
             location.reload();
-        },3000);
+            // $(".qcv-notif").hide();
+            // $("#qcv-notif").text("");
+            // docInit();
+        },1000);
     })
     
 })
@@ -180,7 +199,7 @@ $("#sendToJujo").click(function(){
 
 $("#box-tbody").on('click','.btn-final',function(){
     let iw = $(this).parent('td').parent('tr').find('td:eq(2)').text();
-    fiw=parseFloat(iw);
+    fiw=toFloat(iw);
     let postData = {
         barcode : $(this).data("barcode"),
         status : 5
@@ -189,10 +208,10 @@ $("#box-tbody").on('click','.btn-final',function(){
     .then((data) => {
         // console.log(data);
         $("#box-barcode").text(data[0].barcode);
-        $("#box-melt").text(iw);
-        $("#box-weight").text(data[0].box_weight);
-        $("#box-granule").text(data[0].granule_weight);
-        console.log(iw,parseFloat(data[0].box_weight),parseFloat(data[0].granule_weight));
+        $("#box-melt").text(fiw);
+        $("#box-weight").text(wform(data[0].box_weight));
+        $("#box-granule").text(wform(data[0].granule_weight));
+        console.log(fiw,parseFloat(data[0].box_weight),parseFloat(data[0].granule_weight));
         losscount(fiw,parseFloat(data[0].box_weight),parseFloat(data[0].granule_weight));
         $(".hybernated").attr('disabled',false);
     })
@@ -450,4 +469,20 @@ async function meltfinish(data){
         dataType: "json"
     })
     return details
+}
+
+function tellTheServer() {
+    // curl -X POST http://localhost:3000/gotmessage -H "Content-Type: application/json" -d '{"message": "Hello, world!"}'
+
+    let message = "reload"
+    url = 'http://10.10.10.10:3010/gotmessage';
+    $.ajax({
+        type: "POST",
+        url: url,
+        data: JSON.stringify({ message: message }),
+        contentType: "application/json",
+        success: function (data) {
+            console.log(data);
+        }
+    })
 }

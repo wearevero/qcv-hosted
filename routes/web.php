@@ -1,8 +1,9 @@
 <?php
 
-use App\Models\MeltPackage;
+// use App\Models\MeltPackage;
 use Illuminate\Support\Facades\Route;
-use App\Http\Controllers\MeltPackageController;
+use Illuminate\Support\Facades\DB;
+// use App\Http\Controllers\MeltPackageController;
 
 /*
 |--------------------------------------------------------------------------
@@ -16,8 +17,11 @@ use App\Http\Controllers\MeltPackageController;
 */
 
 Route::get('/', function () {
-    $data['page_title'] = 'QCVentory';
-    return view('Templatez.index', $data);
+    // $data['page_title'] = 'QCVentory';
+    // return view('Templatez.index', $data);
+    $bcstatus  = DB::table('melt_current_status')->select("*")->get();
+    // dd($bcstatus);
+    return view('dashboard', compact('bcstatus'));
 });
 
 // Route Melting

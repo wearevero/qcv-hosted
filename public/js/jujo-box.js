@@ -1,3 +1,7 @@
+// Global Variables
+WgoMlt=0;
+WgoBox=0;
+WgoGrn=0;
 // Events
 $(document).ready(function () {
     // Call Processed Melts
@@ -218,6 +222,7 @@ function reportMeltProduct(data,rcvd) {
     let totalRcvdWeight = parseFloat(rcvd.alloy) + parseFloat(rcvd.original) + parseFloat(rcvd.pohon) + parseFloat(rcvd.potongan);
     let fBoxWeight = parseFloat(totalRcvdWeight).toFixed(2);
     $("#box-weight").val(fBoxWeight);
+    WgoMlt = totalRcvdWeight;
     $("#totalRcvdWeight").text(wform(totalRcvdWeight));
     // Data diff
     $("#alloy-diff").text(wform(parseFloat(data.alloy.weight) - parseFloat(rcvd.alloy)));
@@ -230,8 +235,9 @@ function reportMeltProduct(data,rcvd) {
 }
 
 function getLossWeight() {
-    let totalReceived = parseFloat($("#totalRcvdWeight").text());
-    console.log(totalReceived);
+    // let totalReceived = parseFloat($("#totalRcvdWeight").text());
+    let totalReceived = WgoMlt;
+    // console.log(totalReceived);
     let totalBoxWeight = parseFloat($("#box-weight").val());
     let granuleWeight = parseFloat($("#granule-weight").val());
 

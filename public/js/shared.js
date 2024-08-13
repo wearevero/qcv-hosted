@@ -11,7 +11,7 @@ function replacenull(data){
 }
 
 function normaldate(date){
-    console.log(date);
+    // console.log(date);
     segment = date.split("T");
     datestr = segment[0];
     timestr = segment[1].slice(0,8);
@@ -20,21 +20,28 @@ function normaldate(date){
 
 function losscount(totalReceive,BoxWeight,GranuleWeight) {
     let totalReceived = parseFloat(totalReceive);
-    console.log(totalReceived);
     let totalBoxWeight = parseFloat(BoxWeight);
     let granuleWeight = parseFloat(GranuleWeight);
-
     let minLossGram = totalReceived - (totalBoxWeight + granuleWeight);
     let maxLossGram = totalReceived - totalBoxWeight;
 
     let minLossRate = (minLossGram / totalReceived) * 100;
     let maxLossRate = (maxLossGram / totalReceived) * 100;
     $("#minLossRate").text(minLossRate.toFixed(2));
-    $("#maxLossRate").text(maxLossRate.toFixed(2));
+    // $("#maxLossRate").text(maxLossRate.toFixed(2));
+    $("#maxLossRate").text('-');
     $("#minLossGram").text(minLossGram.toFixed(2));
-    $("#maxLossGram").text(maxLossGram.toFixed(2));
+    // $("#maxLossGram").text(maxLossGram.toFixed(2));
+    $("#maxLossGram").text('-');
 }
 
+function toFloat(string){
+    let newFloat="";
+    let str=string.split(",");
+    newFloat = str.join("");
+    console.log("new Number:",newFloat);
+    return newFloat
+} 
 async function postData(endpoint,data){
     response = await  $.ajax({
         type: "POST",
