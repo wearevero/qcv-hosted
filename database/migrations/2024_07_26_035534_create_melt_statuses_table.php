@@ -16,6 +16,7 @@ return new class extends Migration
             $table->string('barcode');
             $table->unsignedBigInteger('status');
             $table->string('by_person')->default('Test Admin');
+            $table->enum('edited', ['1', '0'])->default('0');
             $table->timestamp('recorded_at')->useCurrent();
             $table->foreign('barcode')->references('barcode')->on('melt_packages');
             $table->foreign('status')->references('id')->on('history_statuses');

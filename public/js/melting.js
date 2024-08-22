@@ -13,9 +13,10 @@ WgoGrn=0;
 $(document).ready(function () {
     // configure socket
     // let socket = socketConfig();
-    socket.on('tellTheClient', (message) => {
+    socket.on('newMessage', (message) => {
         // do action based on message
-        if(message.action == 'reload'){
+        console.log('got message:',message.message);
+        if(message.message == 'reload'){
             // location.reload();
             docInit();
         } 
@@ -253,7 +254,7 @@ $("#box-revised").click(function(){
     let url = 'api/melt_edit_box';
     let postDatas = {
         barcode: $("#box-barcode").text(),
-        status: 5
+        status: 3
     }
     postData(url,postDatas)
     .then((data) => {
@@ -261,6 +262,7 @@ $("#box-revised").click(function(){
         $("#qcv-notif").text(data.message);
         $(".qcv-notif").show();
         setTimeout(function () {
+            tellTheServer();
             location.reload();
         },3000);
     })
@@ -295,7 +297,7 @@ $("#box-tbody").on('click','.melt-detail',function(){
     window.location='Melt/info/'+barcode;
 });
 
-$("#melt-weights").on('submit',function(e){
+$("#melt-weights-form").on('submit',function(e){
     e.preventDefault();
     let meltdata = {
         barcode : $("#we-barcode").val(),
@@ -311,6 +313,7 @@ $("#melt-weights").on('submit',function(e){
         $("#qcv-notif").text(data.message);
         $(".qcv-notif").show();
         setTimeout(function () {
+            tellTheServer();
             location.reload();
         },3000);
     })
@@ -471,18 +474,18 @@ async function meltfinish(data){
     return details
 }
 
-function tellTheServer() {
-    // curl -X POST http://localhost:3000/gotmessage -H "Content-Type: application/json" -d '{"message": "Hello, world!"}'
+// function tellTheServer() {
+//     // curl -X POST http://localhost:3000/gotmessage -H "Content-Type: application/json" -d '{"message": "Hello, world!"}'
 
-    let message = "reload"
-    url = 'http://10.10.10.10:3010/gotmessage';
-    $.ajax({
-        type: "POST",
-        url: url,
-        data: JSON.stringify({ message: message }),
-        contentType: "application/json",
-        success: function (data) {
-            console.log(data);
-        }
-    })
-}
+//     let message = "reload"
+//     url = 'http://10.10.10.10:3010/gotmessage';
+//     $.ajax({
+//         type: "POST",
+//         url: url,
+//         data: JSON.stringify({ message: message }),
+//         contentType: "application/json",
+//         success: function (data) {
+//             console.log(data);
+//         }
+//     })
+// }

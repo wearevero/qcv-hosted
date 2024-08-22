@@ -6,16 +6,24 @@ $(document).ready(function () {
     // get sending melts
     // melts = get_melts().then((data) => {console.log(data) showMeltData(data)})
     // sending melts
+    socket.on('newMessage', (message) => {
+        // do action based on message
+        console.log('got message:',message.message);
+        if(message.message == 'reload'){
+            meltreceive()
+            .then((data) => {
+                // console.log(data)
+                showMeltData("melt-tbody",data.received)
+                showMeltData("pmelt-tbody",data.proccesd)
+            })
+        }
+    });
     meltreceive()
     .then((data) => {
         // console.log(data)
         showMeltData("melt-tbody",data.received)
         showMeltData("pmelt-tbody",data.proccesd)
     })
-    // console.log(collected_barcodes)
-    // setTimeout(() => {
-    //     showCollectedBarcodes()
-    // }, 3000);
 })
 
 $("#melt-tbody").on("click", ".melt-detail", function () {
@@ -57,6 +65,7 @@ $("#rcvButton").on('click', function () {
         $("#qcv-notif").text(response.message);
         $(".qcv-notif").show();
         setTimeout(function () {
+            tellTheServer();
             location.reload();
         },3000);
     })
@@ -73,6 +82,7 @@ function returnData() {
         $("#qcv-notif").text(data.message);
         $(".qcv-notif").show();
         setTimeout(function () {
+            tellTheServer();
             location.reload();
         },3000);
     })

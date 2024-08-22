@@ -60,3 +60,19 @@ async function getData(endpoint){
     }) 
     return response;
 }
+
+function tellTheServer() {
+    // curl -X POST http://localhost:3000/gotmessage -H "Content-Type: application/json" -d '{"message": "Hello, world!"}'
+
+    let message = "reload"
+    url = 'http://10.10.10.10:3010/gotmessage';
+    $.ajax({
+        type: "POST",
+        url: url,
+        data: JSON.stringify({ message: message }),
+        contentType: "application/json",
+        success: function (data) {
+            console.log(data);
+        }
+    })
+}

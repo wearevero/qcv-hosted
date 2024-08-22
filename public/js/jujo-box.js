@@ -5,6 +5,16 @@ WgoGrn=0;
 // Events
 $(document).ready(function () {
     // Call Processed Melts
+    socket.on('newMessage', (message) => {
+        // do action based on message
+        console.log('got message:',message.message);
+        if(message.message == 'reload'){
+            get_melts().then((data) => {
+                showMeltData(data.received,"rcvd-tbody");
+                showMeltData(data.proccesd,"prcd-tbody");
+            })
+        }
+    });
     get_melts().then((data) => {
         showMeltData(data.received,"rcvd-tbody");
         showMeltData(data.proccesd,"prcd-tbody");
@@ -53,6 +63,7 @@ $("#getProccessed").on("click", function () {
     getProccessed(data).then((data) => {
         // console.log(data)
         if(data.success == "ok"){
+            tellTheServer();
             location.reload();
         }
     })
@@ -71,6 +82,7 @@ $("#send-box").on("submit", function (e) {
     sendBox(postData).then((data) => {
         // console.log(data)
         if(data.success == "ok"){
+            tellTheServer();
             location.reload();
         }
     })
@@ -89,7 +101,7 @@ function showMeltData(data,tbody) {
     $("#" + tbody + " tr").remove();
     let trbg,tdbg;
     data.forEach((melt)=>{
-        if(melt.edited == 1 && melt.status == 4 ){
+        if(melt.edited == "1" && melt.status == 3 ){
             trbg = 'bg-danger';
             tdbg = 'bg-transparent text-light';
         }else{

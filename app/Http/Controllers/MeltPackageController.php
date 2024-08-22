@@ -135,9 +135,9 @@ class MeltPackageController extends Controller
     // Barcode;Created;Initial Weight;Current Status;Final Weight
     function created_melt()
     {
-
         $subQuery = DB::table('melt_statuses as sub')
             ->select('sub.barcode', DB::raw('MAX(sub.status) as max_status'))
+            ->join('melt_weights as mw', 'sub.barcode', '=', 'mw.barcode')
             ->where('sub.deleted_at', null)
             ->groupBy('sub.barcode');
 
@@ -146,11 +146,13 @@ class MeltPackageController extends Controller
                 $join->on('main.barcode', '=', 'max_table.barcode')
                     ->on('main.status', '=', 'max_table.max_status');
             })
-            ->select('main.barcode', 'main.status', 'main.by_person', 'pkg.initial_weight', 'pkg.final_weight', 'pkg.created_at', 'pkg.edited')
+            ->select('main.barcode', 'main.status', 'main.by_person', 'main.edited', 'pkg.initial_weight', 'pkg.final_weight', 'pkg.created_at', 'pkg.by_person as created_by')
             ->join('melt_packages as pkg', 'main.barcode', '=', 'pkg.barcode')
+            ->where('main.status', '!=', 6)
             ->where('main.deleted_at', null)
-            ->where('main.recorded_at', 'like', '%' . date('Y-m-d') . '%')
+            // ->where('main.recorded_at', 'like', '%' . date('Y-m-d') . '%')
             ->get();
+
         return response()->json($details);
     }
 
@@ -166,9 +168,16 @@ class MeltPackageController extends Controller
 
     public function melt_wg_edit(Request $request)
     {
+        // delete old status where edited = 1 and status=2 and barcode=barcode;
+        // Melt_statuse::where('barcode', $request->barcode)->where('status', '1')->where('edited', '1')->delete();
         $data = [
+            'original' => $request->original,
+            'alloy' => $request->alloy,
+            'pohon' => $request->pohon,
+            'potongan' => $request->potongan,
             'barcode' => $request->barcode,
             'status' => $request->status,
+            'on_status' => '1',
             'by_person' => $request->by_person,
             'total_weight' => $request->alloy + $request->original + $request->pohon + $request->potongan,
         ];
@@ -199,12 +208,12 @@ class MeltPackageController extends Controller
     {
         $wgupdate = Melt_weight::where('barcode', $data['barcode'])
             ->update([
-                'original' => $data['original'],
+                'origin' => $data['original'],
                 'alloy' => $data['alloy'],
                 'pohon' => $data['pohon'],
                 'potongan' => $data['potongan'],
                 'total_weight' => $data['total_weight'],
-                'on_status' => $data['status'],
+                'on_status' => $data['on_status'],
                 'by_person' => $data['by_person']
             ]);
         return $wgupdate;
@@ -237,9 +246,11 @@ class MeltPackageController extends Controller
     {
         // update melt package where barcode = $request->barcode  set edited = 1
         // update melt
-        $package = MeltPackage::where('barcode', $request->barcode)->update([
-            'edited' => 1
-        ]);
+        $package = Melt_statuse::where('barcode', $request->barcode)
+            ->where('status', $request->status)
+            ->update([
+                'edited' => 1
+            ]);
 
         // delete melt status where barcode = $request->barcode && status = $request->status
         $status = Melt_statuse::where('barcode', $request->barcode)->where('status', ">", $request->status)->delete();
@@ -284,7 +295,7 @@ class MeltPackageController extends Controller
     public function melt_current_status($status, $barcode = "%")
     {
         $melts = DB::table('melt_current_status as mcs')
-            ->select('mcs.barcode', 'mcs.status', 'ms.by_person', 'ms.recorded_at', 'pkg.initial_weight', 'pkg.final_weight', 'pkg.edited', 'pkg.created_at')
+            ->select('mcs.barcode', 'mcs.status', 'ms.by_person', 'ms.recorded_at', 'ms.edited', 'pkg.initial_weight', 'pkg.final_weight', 'pkg.created_at')
             ->join('melt_statuses as ms', 'ms.barcode', '=', 'mcs.barcode')
             ->join('melt_packages as pkg', 'pkg.barcode', '=', 'ms.barcode')
             ->where('ms.status', $status)
@@ -397,6 +408,7 @@ class MeltPackageController extends Controller
     {
         $box = Melt_weight::where('barcode', $request->barcode)
             ->where('on_status', $request->status)
+            ->where('deleted_at', null)
             ->get();
         return response()->json($box);
     }
@@ -428,14 +440,18 @@ class MeltPackageController extends Controller
 
     public function melt_edit_box(Request $request)
     {
-        // update melt package where barcode = $request->barcode  set edited = 1
-        $setEdit = MeltPackage::where('barcode', $request->barcode)->update([
+        // update melt status where barcode = $request->barcode  set edited = 1
+        $setEdit = Melt_statuse::where('barcode', $request->barcode)->where('status', $request->status)->update([
             'edited' => 1
         ]);
 
+        // Delete melt weight where barcode = $request->barcode on status > 3
+        $removeWeight = Melt_weight::where('barcode', $request->barcode)->where('on_status', '>', $request->status)->delete();
+
+
         // delete melt status where barcode = $request->barcode and status = $request->status
-        $setStatus = Melt_statuse::where('barcode', $request->barcode)->where('status', $request->status)->delete();
-        if ($setEdit && $setStatus) {
+        $setStatus = Melt_statuse::where('barcode', $request->barcode)->where('status', '>', $request->status)->delete();
+        if ($setEdit && $setStatus && $removeWeight) {
             return response()->json(['success' => 'ok', 'message' => "Returned to Jujo"]);
         } else {
             return response()->json(['success' => 'bad', 'message' => "Rejection Failed"]);
