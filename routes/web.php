@@ -23,8 +23,28 @@ Route::get('/', function () {
     // dd($bcstatus);
     return view('dashboard', compact('bcstatus'));
 });
+// Route Inventory
+Route::group(['prefix' => 'Inventory'], function () {
+    Route::get('/', function () {
+        $data['page_title'] = 'Melting-Inventory';
+        return view('Melting.index', $data);
+    })->name('inventory.index');
+});
+// Route Jujo
 
 // Route Melting
+Route::group(['prefix' => 'Jujo'], function () {
+    Route::get('/', function () {
+        $data['page_title'] = 'Melting-Jujo';
+        return view('Melting.jujo', $data);
+    })->name('melting.jujo');
+
+    Route::get('/box', function () {
+        $data['page_title'] = "Melting-Jujo-Box";
+        return view('Melting.jujo-box', $data);
+    })->name('melting.jujo-box');
+});
+/*
 Route::group(['prefix' => 'Melt'], function () {
     Route::get('/', function () {
         $data['page_title'] = 'Melting-Inventory';
@@ -38,14 +58,4 @@ Route::group(['prefix' => 'Melt'], function () {
     })->name('melting.info');
 });
 
-Route::group(['prefix' => 'Jujo'], function () {
-    Route::get('/', function () {
-        $data['page_title'] = 'Melting-Jujo';
-        return view('Melting.jujo', $data);
-    })->name('melting.jujo');
-
-    Route::get('/box', function () {
-        $data['page_title'] = "Melting-Jujo-Box";
-        return view('Melting.jujo-box', $data);
-    })->name('melting.jujo-box');
-});
+*/

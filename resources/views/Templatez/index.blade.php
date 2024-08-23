@@ -16,7 +16,18 @@
 <body>
 <div class="container-fluid">
     <div class="row">
-        @include('Templatez.header')
+        <?php
+        $requrl = Request::path();
+        $segment = explode("/", $requrl);
+        $group = $segment[0];
+        switch($group) {
+            case 'Inventory': $header = 'Templatez.header-inventory'; break;
+            case 'Jujo': $header = 'Templatez.header-jujo'; break;
+            default: $header = 'Templatez.header';
+        }
+        ?>
+        {{-- @include('Templatez.header') --}}
+        @include($header)
     </div>
     @include('Templatez.page-header')
     

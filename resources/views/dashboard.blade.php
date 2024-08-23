@@ -15,26 +15,62 @@
 
 <body>
 <div class="container-fluid">
-    <div class="row py-3 px-3">
-        <div class="col-lg-4 col-sm-6 mx-auto">
-            <table class="table table-bordered">
-                <thead>
-                    <tr>
-                        <th>Barcode</th>
-                        <th>Current Status</th>
-                    </tr>
-                </thead>
-                <tbody id="bc-tbody">
-                    @foreach ($bcstatus as $bc)
-                        <tr>
-                            <td>{{ $bc->barcode }}</td>
-                            <td>{{ $bc->status }}</td>
-                        </tr>
-                    @endforeach
-                </tbody>
-            </table>
-        </div>     
+    <div class="row">
+        <div class="col jumbotronz">
+            <h1>Inventory Quality Control System</h1>
+        </div>
     </div>
+    <div class="row">
+        <div class="col">
+            <ul class="nav nav-tabs">
+                <li class="nav-item">
+                  <a class="nav-link" aria-current="page" href="{{ url('/Inventory')}}">Inventory</a>
+                </li>
+                <li class="nav-item">
+                  <a class="nav-link" aria-current="page" href="{{ url('/Jujo')}}">Jujo</a>
+                </li>
+            </ul>
+        </div>
+    </div>
+    <div class="row">
+        <div class="col-lg-4">
+            <div class="card">
+                <div class="card-header">MELTING</div>
+                <div class="card-body">
+                    <h4>Current Progress Status</h4>
+                    <table class="table table-bordered">
+                        <thead>
+                            <tr>
+                                <th>Barcode</th>
+                                <th>Current Status</th>
+                            </tr>
+                        </thead>
+                        <tbody id="bc-tbody">
+                            @foreach ($bcstatus as $bc)
+                                <tr>
+                                    <td>{{ $bc->barcode }}</td>
+                                    <td>{{ $bc->status }}</td>
+                                </tr>
+                            @endforeach
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+        </div>
+        <div class="col-lg-4">
+            <div class="card">
+                <div class="card-header">CASTING</div>
+                <div class="card-body"></div>
+            </div>
+        </div>
+        <div class="col-lg-4">
+            <div class="card">
+                <div class="card-header">CUTTING</div>
+                <div class="card-body"></div>
+            </div>
+        </div>
+    </div>
+    
     
     <script src="https://cdn-script.com/ajax/libs/jquery/3.7.1/jquery.min.js"></script>
     <script src="https://cdn.socket.io/4.3.2/socket.io.min.js"></script>
