@@ -44,7 +44,15 @@ class MeltPackageController extends Controller
         $data['granule_weight'] = 0;
         $melt_weight = $this->melt_weight($data);
 
-        if ($melt_init && $melt_status && $melt_weight) {
+        // Send to Jujo
+        $meltData = [
+            'barcode' => $request->barcode,
+            'status' => 2,
+            'by_person' => $request->by_person
+        ];
+        $send = Melt_statuse::create($meltData);
+
+        if ($melt_init && $melt_status && $melt_weight && $send) {
             return response()->json([
                 'success' => 'ok',
                 'message' => 'Melt Package Saved. Melt Status Created',
@@ -323,13 +331,21 @@ class MeltPackageController extends Controller
             'granule_weight' => 0
         ];
 
+        $processed = [
+            'barcode' => $request->barcode,
+            'by_person' => $request->by_person,
+            'status' => 4
+        ];
+
+        $procesStatus = $this->init_status($processed);
+
         // Entry melt weight
         $weight = $this->melt_weight($data);
 
         // Entry melt status
         $status = $this->init_status($data);
 
-        if ($weight && $status) {
+        if ($weight && $status && $procesStatus) {
             return response()->json(['success' => 'ok', 'message' => "Status updated"]);
         } else {
             return response()->json(['success' => 'bad', 'message' => "Status does not updated"]);

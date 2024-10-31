@@ -44,7 +44,7 @@ Route::group(['prefix' => 'Jujo'], function () {
         return view('Melting.jujo-box', $data);
     })->name('melting.jujo-box');
 });
-/*
+
 Route::group(['prefix' => 'Melt'], function () {
     Route::get('/', function () {
         $data['page_title'] = 'Melting-Inventory';
@@ -57,5 +57,3 @@ Route::group(['prefix' => 'Melt'], function () {
         return view('Melting.info', $data);
     })->name('melting.info');
 });
-
-*/

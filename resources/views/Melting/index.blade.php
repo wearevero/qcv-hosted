@@ -8,7 +8,7 @@
         <div class="col-lg-6">
             <section>
                 <div class="sub-title">
-                    <h4>Package Details</h4>
+                    <h4>Detail Paket</h4>
                 </div>
                 
                 {{-- Form Barcode: Begin --}}
@@ -16,7 +16,7 @@
                     <div class="form-group row my-3">
                         <label for="barcode" class="col-sm-4 col-form-label">Generate Barcode ke-<span id="sequence"></span></label>
                         <div class="col-sm-2">
-                            <select id="bc-karat" class="form-control">
+                            <select id="bc-karat" class="form-control" tabindex="1">
                                 <option value="" disabled selected>Pilih Karat</option>
                                 <option value="9KV">9KV</option>
                                 <option value="10K">10K</option>
@@ -28,7 +28,7 @@
                             </select>
                         </div>
                         <div class="col-sm-2">
-                            <select id="bc-color" class='form-control'>
+                            <select id="bc-color" class='form-control' tabindex="2">
                                 <option value="" disabled selected>Pilih Color</option>
                                 <option value="RG">RG</option>
                                 <option value="WG">WG</option>
@@ -41,33 +41,33 @@
                     </div>
                     <div class="form-group row my-3">
                         <label for="xxx" class='col-sm-4'>Original</label>
-                        <div class="col-sm-2"><input type="text" class="form-control" name ="original-karat" id="original-karat" placeholder="karat"></div>
-                        <div class="col-sm-2"><input type="text" class="form-control" name ="original-color" id="original-color" placeholder="color"></div>
-                        <div class="col-sm-2"><input type="number" min="0" step="0.01" class="form-control text-end weights" name ="original-weight" id="original-weight" placeholder="weight" @required(true)></div>
-                        <div class="col-sm-2"><input type="text" class="form-control" name ="original-remark" id="original-remark" placeholder="remark"></div>
+                        <div class="col-sm-2"><input @readonly(true) type="text" class="form-control" name ="original-karat" id="original-karat" placeholder="karat"></div>
+                        <div class="col-sm-2"><input @readonly(true) type="text" class="form-control" name ="original-color" id="original-color" placeholder="color"></div>
+                        <div class="col-sm-2"><input @readonly(false) type="number" min="0" step="0.01" class="form-control text-end weights" name ="original-weight" id="original-weight" placeholder="weight" @required(true) tabindex="3"></div>
+                        <div class="col-sm-2"><input @readonly(true) type="text" class="form-control" name ="original-remark" id="original-remark" placeholder="remark" value="-"></div>
                     </div>
 
                     <div class="form-group row my-3">
                         <label for="xxx" class='col-sm-4'>Alloy</label>
-                        <div class="col-sm-2"><input type="text" class="form-control" name ="alloy-karat" id="alloy-karat" placeholder="karat"></div>
-                        <div class="col-sm-2"><input type="text" class="form-control" name ="alloy-color" id="alloy-color" placeholder="color"></div>
-                        <div class="col-sm-2"><input type="number" min="0" step="0.01" class="form-control text-end weights" name ="alloy-weight" id="alloy-weight" placeholder="weight" @required(true)></div>
-                        <div class="col-sm-2"><input type="text" class="form-control" name ="alloy-remark" id="alloy-remark" placeholder="remark"></div>
+                        <div class="col-sm-2"><input @readonly(true) type="text" class="form-control" name ="alloy-karat" id="alloy-karat" placeholder="karat"></div>
+                        <div class="col-sm-2"><input @readonly(true) type="text" class="form-control" name ="alloy-color" id="alloy-color" placeholder="color"></div>
+                        <div class="col-sm-2"><input @readonly(false) type="number" min="0" step="0.01" class="form-control text-end weights" name ="alloy-weight" id="alloy-weight" placeholder="weight" @required(true) tabindex="4"></div>
+                        <div class="col-sm-2"><input @readonly(true) type="text" class="form-control" name ="alloy-remark" id="alloy-remark" placeholder="remark" value="-"></div>
                     </div>
                     
                     <div class="form-group row my-3">
                         <label for="xxx" class='col-sm-4'>Pohon</label>
-                        <div class="col-sm-2"><input type="text" class="form-control" name ="pohon-karat" id="pohon-karat" placeholder="karat"></div>
-                        <div class="col-sm-2"><input type="text" class="form-control" name ="pohon-color" id="pohon-color" placeholder="color"></div>
-                        <div class="col-sm-2"><input type="number" min="0" step="0.01" class="form-control text-end weights" name ="pohon-weight" id="pohon-weight" placeholder="weight" @required(true)></div>
-                        <div class="col-sm-2"><input type="text" class="form-control" name ="pohon-remark" id="pohon-remark" placeholder="remark"></div>
+                        <div class="col-sm-2"><input @readonly(true) type="text" class="form-control" name ="pohon-karat" id="pohon-karat" placeholder="karat"></div>
+                        <div class="col-sm-2"><input @readonly(true) type="text" class="form-control" name ="pohon-color" id="pohon-color" placeholder="color"></div>
+                        <div class="col-sm-2"><input @readonly(false) type="number" min="0" step="0.01" class="form-control text-end weights" name ="pohon-weight" id="pohon-weight" placeholder="weight" @required(true) tabindex="5"></div>
+                        <div class="col-sm-2"><input @readonly(true) type="text" class="form-control" name ="pohon-remark" id="pohon-remark" placeholder="remark" value="-"></div>
                     </div>
                     <div class="form-group row my-3">
                         <label for="xxx" class='col-sm-4'>Potongan</label>
-                        <div class="col-sm-2"><input type="text" class="form-control" name ="potongan-karat" id="potongan-karat" placeholder="karat"></div>
-                        <div class="col-sm-2"><input type="text" class="form-control" name ="potongan-color" id="potongan-color" placeholder="color"></div>
-                        <div class="col-sm-2"><input type="number" min="0" step="0.01" class="form-control text-end weights" name ="potongan-weight" id="potongan-weight" placeholder="weight" @required(true)></div>
-                        <div class="col-sm-2"><input type="text" class="form-control" name ="potongan-remark" id="potongan-remark" placeholder="remark"></div>
+                        <div class="col-sm-2"><input @readonly(true) type="text" class="form-control" name ="potongan-karat" id="potongan-karat" placeholder="karat"></div>
+                        <div class="col-sm-2"><input @readonly(true) type="text" class="form-control" name ="potongan-color" id="potongan-color" placeholder="color"></div>
+                        <div class="col-sm-2"><input @readonly(false) type="number" min="0" step="0.01" class="form-control text-end weights" name ="potongan-weight" id="potongan-weight" placeholder="weight" @required(true) tabindex="6"></div>
+                        <div class="col-sm-2"><input @readonly(true) type="text" class="form-control" name ="potongan-remark" id="potongan-remark" placeholder="remark" value="-"></div>
                     </div>
                     <div class="form-group row py-0 my-0">
                         <label for="xxx" class="col-sm-4">Total Weight</label>
@@ -81,10 +81,10 @@
                     <div class="form-group row py-3 my-3"style="border-top:1px solid black;">
                         <label for="by_user" class="col-sm-4">Dibuat Oleh</label>
                         <div class="col-sm-4">
-                            <input type="text" name="by_user" class="form-control" id="by_user">
+                            <input type="text" name="by_user" class="form-control" id="by_user" tabindex="7">
                         </div>
                         <div class="col-sm-4">
-                            <button type="submit" class="btn btn-primary rounded form-control">Create</button>
+                            <button type="submit" class="btn btn-primary rounded form-control" tabindex="8">Buat dan Kirim</button>
                         </div>
                     </div>
                 </form>
@@ -96,7 +96,7 @@
             <section class="mb-3">
 
                 <div class="sub-title">
-                    <h4>Packages Histories</h4>
+                    <h4>Daftar Paket Hari Ini</h4>
                 </div>
                 <div class="table-responsive">
                     <table class="table table-sm">
@@ -131,7 +131,7 @@
             <section class="mb-3">
 
                 <div class="sub-title">
-                    <h4>Box Production</h4>
+                    <h4>Produksi Boks Melting</h4>
                 </div>
                 <div class="table-responsive">
                     <table class="table table-sm">

@@ -47,6 +47,13 @@ input[type=text] {
   padding: 10px 20px;
 }
 
+.nav-boxed {
+  min-width: 100px;
+  margin-right: 2px;
+  background-color: #a9c9ec;
+  border-radius: 5px;
+}
+
 .qcv-notif {
   display: none;
 }
@@ -56,7 +63,10 @@ img.icon {
   height: 15px;
 }
 
-input, select, th, td {
+input,
+select,
+th,
+td {
   font-size: 14px;
   color: maroon;
 }
@@ -67,7 +77,8 @@ input, select, th, td {
 }
 
 @media screen and (max-width: 1365px) {
-  html, body {
+  html,
+  body {
     font-size: 10pt !important;
   }
 }/*# sourceMappingURL=qcventory.css.map */

@@ -36,7 +36,7 @@
     <script src="https://cdn-script.com/ajax/libs/jquery/3.7.1/jquery.min.js"></script>
     <script src="https://cdn.socket.io/4.3.2/socket.io.min.js"></script>
     <script>
-    const socket = io('http://10.10.10.10:3010');
+    const socket = io('http://10.10.11.11:3010');
     </script>
     @yield('scripts')
 

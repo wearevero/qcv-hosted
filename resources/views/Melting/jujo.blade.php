@@ -7,7 +7,7 @@
         {{-- Form Barcode --}}
         <div class="col-lg-4 col-xl-6">
             <div class="sub-title">
-                <h4>Package Details</h4>
+                <h4>Detail Paket</h4>
             </div>
                 <div class="table-responsiv">
                     <table class="table table-striped">
@@ -17,11 +17,11 @@
                                 <td colspan="4" class="h5" id="barcode"></td>
                             </tr>
                             <tr>
-                                <th>Specs</th>
+                                <th>Spek.</th>
                                 <th>Karat</th>
-                                <th>Color</th>
-                                <th>Weight</th>
-                                <th>Remark</th>
+                                <th>Warna</th>
+                                <th>Bobot</th>
+                                <th>Catatan</th>
                             </tr>
                         </thead>
                         <tbody>
@@ -60,18 +60,18 @@
                                 <td>&nbsp;</td>
                             </tr>
                             <tr>
-                                <th id="respondedBy">Received By</th>
+                                <th id="respondedBy">Diterima Oleh</th>
                                 <td>
                                     <div class="form-check form-check-inline">
                                         <input class="form-check-input" type="checkbox" id="requestEdit">
-                                        <label class="form-check-label" for="requestEdit">Return Data</label>
+                                        <label class="form-check-label" for="requestEdit">Kembalikan Data</label>
                                     </div>
                                 </td>
                                 <td colspan="2">
                                     <input type="text" class="form-control" id="by_person">
                                 </td>
                                 <td>
-                                    <button class="btn btn-primary rounded form-control" id="rcvButton">Received</button>
+                                    <button class="btn btn-primary rounded form-control" id="rcvButton">Terima</button>
                                     <button class="btn btn-primary rounded form-control" id="rtrButton" style="display:none;" onclick="returnData()">Return</button>
                                 </td>
                             </tr>
@@ -84,18 +84,18 @@
         <div class="col-lg-8 col-xl-6">
 
             <div class="sub-title">
-                <h4>Incoming Package</h4>
+                <h4>Antrian Paket Masuk</h4>
             </div>
             <div class="table-responsive">
                 <table class="table table-sm">
                     <thead>
                         <tr>
                             <th scope="col">Barcode</th>
-                            <th scope="col">Send</th>
-                            <th scope="col">Initial Weight</th>
-                            <th scope="col">Current Status</th>
-                            <th scope="col">Final Weight</th>
-                            <th scope="col" class='text-center'>Control</th>
+                            <th scope="col">Dikirim</th>
+                            <th scope="col">Bobot Awal</th>
+                            <th scope="col">Status</th>
+                            <th scope="col">Bobot Akhir</th>
+                            <th scope="col" class='text-center'>Kontrol</th>
                         </tr>
                     </thead>
                     <tbody id="melt-tbody">
@@ -117,7 +117,7 @@
             {{-- Processed Melt --}}
             <hr>
             <div class="sub-title">
-                <h4>Received Package</h4>
+                <h4>Paket Diterima</h4>
             </div>
             <div class="table-responsive">
                 <table class="table table-sm">
@@ -139,9 +139,10 @@
                             <td scope="col" class="text-center">3</td>
                             <td scope="col" class="text-center"> - </td>
                             <td scope="col">
-                                <button class="btn btn-sm btn-success rounded">Details</button>
+                                &nbsp;
+                                {{-- <button class="btn btn-sm btn-success rounded">Details</button>
                                 <button class="btn btn-sm btn-warning rounded">Edit</button>
-                                <button class="btn btn-sm btn-danger rounded">Delete</button>
+                                <button class="btn btn-sm btn-danger rounded">Delete</button> --}}
                             </td>
                         </tr>
                     </tbody>

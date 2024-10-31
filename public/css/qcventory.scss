@@ -1,7 +1,8 @@
 /* Dashboard*/
-.jumbotronz{
+.jumbotronz {
     height: 200px;
-    background: linear-gradient(#00000080,#e7ffd9,#ffffff50),url('../imgs/ptvi.png');
+    background: linear-gradient(#00000080, #e7ffd9, #ffffff50),
+        url("../imgs/ptvi.png");
     // background-image: url('../imgs/ptvi.png');
     background-repeat: no-repeat;
     background-position: bottom;
@@ -10,62 +11,71 @@
     display: flex;
     align-items: center;
     justify-content: center;
-    h1{
+    h1 {
         font-size: 48pt;
         text-align: center;
         color: yellowgreen;
-        margin:0;
-        padding:0;
+        margin: 0;
+        padding: 0;
         text-shadow: 0px 0px 3px black;
     }
 }
-input[type=number],
-input[type=text]{
-    border:1px solid #b7c4a9;
+input[type="number"],
+input[type="text"] {
+    border: 1px solid #b7c4a9;
     box-shadow: 0px 0px 3px gray;
 }
 
-.bg-qcventory{
+.bg-qcventory {
     background-color: #b1d4fc;
     color: #343a40;
-    font-family:Verdana, Geneva, Tahoma, sans-serif;
+    font-family: Verdana, Geneva, Tahoma, sans-serif;
 }
-#navbarSupportedContent > ul > li> ul > li{
-    margin-top:0;
+#navbarSupportedContent > ul > li > ul > li {
+    margin-top: 0;
     margin-bottom: 0;
-    font-size: 12pt!important;
+    font-size: 12pt !important;
     padding-top: 0;
     padding-bottom: 0;
 }
-.page-header{
+.page-header {
     background-color: #64acff;
     color: #f2fdf2;
-    font-family:Arial, Helvetica, sans-serif;
-    font-size:20 pt;
-    padding:10px 20px;
+    font-family: Arial, Helvetica, sans-serif;
+    font-size: 20 pt;
+    padding: 10px 20px;
+}
+.nav-boxed {
+    min-width: 100px;
+    margin-right: 2px;
+    background-color: #a9c9ec;
+    border-radius: 5px;
+}
+.qcv-notif {
+    display: none;
 }
 
-.qcv-notif{display:none;}
-
-img.icon{
+img.icon {
     width: 15px;
     height: 15px;
 }
 
-input,select,th,td{
-    font-size:14px;
+input,
+select,
+th,
+td {
+    font-size: 14px;
     color: maroon;
 }
 
-.bg-bahaja{
-    background-color: #ff0000!important;
-    color: #fcf700!important;
+.bg-bahaja {
+    background-color: #ff0000 !important;
+    color: #fcf700 !important;
 }
 
-
-
 @media screen and (max-width: 1365px) {
-    html,body{
-        font-size: 10pt!important;
+    html,
+    body {
+        font-size: 10pt !important;
     }
 }
