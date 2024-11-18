@@ -479,4 +479,76 @@ class MeltPackageController extends Controller
         $barcodes = DB::table('melt_current_status')->select("*")->get();
         return response()->json($barcodes);
     }
+
+    public function dailyReport()
+    {
+        // bc example: MEL-241101-14KVRG.01
+        $today = '241101';
+        $result = MeltPackage::with(['weights'])
+            ->where('barcode', 'like', '%' . $today . '%')->get();
+        // return response()->json($result);
+
+        $outputs = [];
+        foreach ($result as $key => $value) {
+            // dd($value->barcode);
+            $bc = $this->extract_barcode($value->barcode);
+            $seq = $bc['sequence'];
+            $karat = $bc['karat'];
+            $color = $bc['color'];
+            $all = json_decode($value->alloy);
+            $ori = json_decode($value->original);
+            $poh = json_decode($value->pohon);
+            $pot = json_decode($value->potongan);
+            $loss = $value->weights[1]->total_weight - ($value->weights[3]->box_weight + $value->weights[3]->granule_weight);
+            $outputs[$seq] = [
+                'color' => $color,
+                'metal' => $karat,
+                'allo' => $all->weight,
+                'orig' => $ori->weight,
+                'poho' => $poh->weight,
+                'poto' => $pot->weight,
+                'in_jujo' => $value->weights[1]->total_weight,
+                'out_jujo' => $value->weights[3]->box_weight,
+                'granule' => $value->weights[3]->granule_weight,
+                'loss' => $loss,
+                '24k' => $this->K24K($karat) * $loss,
+                'kadarkarat' => $this->K24K($karat),
+                'remark' => "",
+            ];
+        }
+        return $outputs;
+        // return response()->json($outputs);
+    }
+
+    private function extract_barcode($barcode)
+    {
+        list($bc, $seq) = explode('.', $barcode);
+        list($type, $date, $spec) = explode('-', $bc);
+        $color = substr($spec, -2);
+        $karat = substr($spec, 0, strlen($spec) - 2);
+        return array('sequence' => $seq, 'type' => $type, 'date' => $date, 'karat' => $karat, 'color' => $color);
+    }
+
+    private function K24K($karat)
+    {
+        // =IF(J5="","",IF(B5="14K",J5*0.585,IF(B5="18K",J5*0.75,IF(B5="18KV",J5*0.751,IF(B5="9KV",J5*0.377,IF(B5="22K",J5*0.916,IF(B5="10K",J5*0.416,J5*0.587)))))))
+        switch ($karat) {
+            case '':
+                return 0;
+            case '14K':
+                return 0.585;
+            case '18K':
+                return 0.75;
+            case '18KV':
+                return 0.751;
+            case '9KV':
+                return 0.377;
+            case '22K':
+                return 0.916;
+            case '10K':
+                return 0.416;
+            default:
+                return 0.587;
+        }
+    }
 }

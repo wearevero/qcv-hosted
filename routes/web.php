@@ -1,6 +1,8 @@
 <?php
 
 // use App\Models\MeltPackage;
+
+use App\Http\Controllers\MeltPackageController;
 use Illuminate\Support\Facades\Route;
 use Illuminate\Support\Facades\DB;
 // use App\Http\Controllers\MeltPackageController;
@@ -56,4 +58,11 @@ Route::group(['prefix' => 'Melt'], function () {
         $data['barcode'] = $bc;
         return view('Melting.info', $data);
     })->name('melting.info');
+
+    Route::get('/daily-report', function () {
+        $data['page_title'] = 'Melting-Daily-Report';
+        $data['reports'] = (new MeltPackageController)->dailyReport();
+        return view('Melting.daily-report', $data);
+    })->name('melting.daily-report');
+    // Route::get('/daily-report', [MeltPackageController::class, 'dailyReport'])->name('melting.daily-report');
 });

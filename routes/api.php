@@ -43,3 +43,5 @@ Route::post('/melt_edit_box', [MeltPackageController::class, 'melt_edit_box']);
 
 // Dashboard end points
 Route::get('/bcstatuses', [MeltPackageController::class, 'bcstatuses']);
+// Reports
+Route::get('/daily-report', [MeltPackageController::class, 'dailyReport']);
