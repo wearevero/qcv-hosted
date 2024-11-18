@@ -483,7 +483,7 @@ class MeltPackageController extends Controller
     public function dailyReport()
     {
         // bc example: MEL-241101-14KVRG.01
-        $today = '241101';
+        $today = date('ymd');
         $result = MeltPackage::with(['weights'])
             ->where('barcode', 'like', '%' . $today . '%')->get();
         // return response()->json($result);
