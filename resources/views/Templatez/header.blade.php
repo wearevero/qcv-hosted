@@ -15,6 +15,7 @@
               <li><a href="#" class="dropdown-item" @disabled(true)>MELTING</a></li>
               <li><a href="{{route('inventory.index')}}" class="dropdown-item">Create Package</a></li>
               <li><a href="{{route('inventory.index')}}" class="dropdown-item">Receive Box</a></li>
+              <li><a href="{{route('melting.daily-report')}}" class="dropdown-item">Daily Report</a></li>
               <li><hr class="dropdown-divider"></li>
               <li><a href="#" class="dropdown-item" @disabled(true)>CASTING</a></li>
               <li><hr class="dropdown-divider"></li>
