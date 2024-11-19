@@ -13,6 +13,9 @@
             <li class="nav-item nav-boxed">
                 <a class="nav-link" href="{{route('inventory.index')}}">Terima Box</a>
             </li>   
+            <li class="nav-item nav-boxed">
+                <a class="nav-link" href="{{route('melting.daily-report')}}">Laporan Harian</a>
+            </li>   
         </ul>
         <form class="d-flex" role="search" id="search-form">
           <input class="form-control me-2" type="search" placeholder="Search" aria-label="Search" id="search-box">
